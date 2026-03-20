@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습게시판 - 게시판</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="home.html" class="logo">
+        <span class="logo-icon">L</span>
+        학습게시판
+      </a>
+
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav">
+        <a href="home.html">홈</a>
+        <a href="board.html" class="active">게시판</a>
+        <a href="profile.html">내 정보</a>
+        <div class="nav-auth">
+          <a href="login.html" class="btn btn-ghost btn-sm">로그인</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">회원가입</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+
+    <!-- Section Header -->
+    <div class="section-header">
+      <h2>게시판</h2>
+      <div class="search-box">
+        <input type="text" class="form-input" placeholder="게시글 검색...">
+        <button type="button" class="btn btn-secondary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          검색
+        </button>
+      </div>
+    </div>
+
+    <!-- Board Top Bar -->
+    <div class="board-topbar">
+      <span class="info">총 <strong>8</strong>개의 게시글</span>
+      <a href="board-write.html" class="btn btn-primary btn-sm">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        새 글 작성
+      </a>
+    </div>
+
+    <!-- Board Table -->
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-no">번호</th>
+            <th class="col-title">제목</th>
+            <th class="col-author">작성자</th>
+            <th class="col-date">작성일</th>
+            <th class="col-views">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-no">8</td>
+            <td class="col-title">
+              <a href="board-view.html">CSS Flexbox와 Grid의 차이점 정리</a>
+              <span class="badge badge-primary" style="margin-left: 0.5rem;">NEW</span>
+            </td>
+            <td class="col-author">김개발</td>
+            <td class="col-date">2026-02-10</td>
+            <td class="col-views">42</td>
+          </tr>
+          <tr>
+            <td class="col-no">7</td>
+            <td class="col-title">
+              <a href="board-view.html">JavaScript 기초 - 변수와 자료형</a>
+            </td>
+            <td class="col-author">이학생</td>
+            <td class="col-date">2026-02-09</td>
+            <td class="col-views">128</td>
+          </tr>
+          <tr>
+            <td class="col-no">6</td>
+            <td class="col-title">
+              <a href="board-view.html">HTML 시맨틱 태그 활용법</a>
+            </td>
+            <td class="col-author">박코딩</td>
+            <td class="col-date">2026-02-08</td>
+            <td class="col-views">95</td>
+          </tr>
+          <tr>
+            <td class="col-no">5</td>
+            <td class="col-title">
+              <a href="board-view.html">반응형 웹 디자인 미디어 쿼리 예제</a>
+            </td>
+            <td class="col-author">최프론트</td>
+            <td class="col-date">2026-02-07</td>
+            <td class="col-views">203</td>
+          </tr>
+          <tr>
+            <td class="col-no">4</td>
+            <td class="col-title">
+              <a href="board-view.html">CSS 애니메이션과 트랜지션 비교</a>
+            </td>
+            <td class="col-author">김개발</td>
+            <td class="col-date">2026-02-05</td>
+            <td class="col-views">87</td>
+          </tr>
+          <tr>
+            <td class="col-no">3</td>
+            <td class="col-title">
+              <a href="board-view.html">웹 접근성(a11y) 기본 가이드</a>
+            </td>
+            <td class="col-author">정디자인</td>
+            <td class="col-date">2026-02-03</td>
+            <td class="col-views">156</td>
+          </tr>
+          <tr>
+            <td class="col-no">2</td>
+            <td class="col-title">
+              <a href="board-view.html">DOM 조작 기본 메서드 정리</a>
+            </td>
+            <td class="col-author">이학생</td>
+            <td class="col-date">2026-02-01</td>
+            <td class="col-views">312</td>
+          </tr>
+          <tr>
+            <td class="col-no">1</td>
+            <td class="col-title">
+              <a href="board-view.html">게시판에 오신 것을 환영합니다!</a>
+              <span class="badge badge-success">공지</span>
+            </td>
+            <td class="col-author">관리자</td>
+            <td class="col-date">2026-01-30</td>
+            <td class="col-views">524</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination" aria-label="페이지 이동">
+      <a href="#" class="disabled" aria-label="이전 페이지">&laquo;</a>
+      <span class="active">1</span>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#" aria-label="다음 페이지">&raquo;</a>
+    </nav>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>학습용 웹페이지 &copy; 2026 &mdash; HTML, CSS, JavaScript 실습 프로젝트</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
