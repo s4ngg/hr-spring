@@ -1,5 +1,9 @@
 package kr.co.hr.member.repository;
 
-public interface MemberRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import kr.co.hr.member.entity.Member;
+
+public interface MemberRepository extends JpaRepository<Member, Long>{
 
 }
