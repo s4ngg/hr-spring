@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import kr.co.hr.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,10 @@ public class Vacation {
     private Integer days;        
     private String status;       
     
+    @PrePersist
+    public void prePersist() {
+    this.createdAt = LocalDateTime.now();
+    }
     private LocalDateTime createdAt;
 	
 }
