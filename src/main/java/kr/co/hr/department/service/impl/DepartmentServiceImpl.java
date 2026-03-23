@@ -84,7 +84,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
         }
 
-        // 엔티티 update 메서드 호출 - save() 없어도 더티체킹으로 자동 반영!
+        // 엔티티 update 메서드 호출 - save() 없어도 더티체킹으로 자동 반영
         department.update(dto.getDeptCode(), dto.getDeptName(), manager);
     }
 
