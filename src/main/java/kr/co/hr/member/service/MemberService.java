@@ -1,0 +1,75 @@
+package kr.co.hr.member.service;
+ 
+import java.util.List;
+import java.util.stream.Collectors;
+ 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+ 
+import kr.co.hr.member.dto.MemberRequestDTO;
+import kr.co.hr.member.dto.MemberResponseDTO;
+import kr.co.hr.member.entity.Member;
+import kr.co.hr.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+ 
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService {
+ 
+	private final MemberRepository memberRepository;
+ 
+	// 전체 직원 조회
+	public List<MemberResponseDTO> getAllMembers() {
+		return memberRepository.findAll()
+				.stream()
+				.map(MemberResponseDTO::new)
+				.collect(Collectors.toList());
+	}
+ 
+	// 단일 직원 조회
+	public MemberResponseDTO getMember(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
+		return new MemberResponseDTO(member);
+	}
+ 
+	// 직원 등록
+	@Transactional
+	public MemberResponseDTO createMember(MemberRequestDTO requestDTO) {
+		Member member = new Member();
+		member.setEmployeeNo(requestDTO.getEmployeeNo());
+		member.setName(requestDTO.getName());
+		member.setEmail(requestDTO.getEmail());
+		member.setPassword(requestDTO.getPassword());
+		member.setRole(requestDTO.getRole());
+		member.setStatus(requestDTO.getStatus());
+		member.setEmployType(requestDTO.getEmployType());
+		member.setHireDate(requestDTO.getHireDate());
+		member.setProfileImage(requestDTO.getProfileImage());
+		return new MemberResponseDTO(memberRepository.save(member));
+	}
+ 
+	// 직원 정보 수정
+	@Transactional
+	public MemberResponseDTO updateMember(Long memberId, MemberRequestDTO requestDto) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
+		member.setName(requestDto.getName());
+		member.setEmail(requestDto.getEmail());
+		member.setRole(requestDto.getRole());
+		member.setStatus(requestDto.getStatus());
+		member.setEmployType(requestDto.getEmployType());
+		member.setHireDate(requestDto.getHireDate());
+		member.setProfileImage(requestDto.getProfileImage());
+		return new MemberResponseDTO(member);
+	}
+ 
+	// 직원 삭제
+	@Transactional
+	public void deleteMember(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
+		memberRepository.delete(member);
+	}
+}
