@@ -23,9 +23,6 @@ public class VacationRequestDTO {
 	@Schema(description = "휴가 종료일", example = "2026-03-28")
 	private LocalDate endDate;
 	
-	@Schema(description = "사유", example = "힘들어서")
-	private String reason;
-	
 	@Schema(description = "대리 신청자 번호", example = "훈이")
 	private Long proxyMemberId;
 	
