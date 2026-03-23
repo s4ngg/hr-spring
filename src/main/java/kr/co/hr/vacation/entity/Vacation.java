@@ -31,10 +31,11 @@ public class Vacation {
     private Member member; 
 
     private String vacationType; 
+    private String status;      
     private LocalDate startDate; 
     private LocalDate endDate;   
     private Integer days;        
-    private String status;       
+    private Integer proxyMemberId;
     
     @PrePersist
     public void prePersist() {

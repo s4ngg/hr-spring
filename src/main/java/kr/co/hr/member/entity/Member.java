@@ -39,6 +39,8 @@ public class Member {
 	private String role;
 	private String status;
 	private String employType;
+	private String profileImage;
+	
 	private LocalDate hireDate;
 	
 	private LocalDateTime createdAt;
