@@ -15,7 +15,7 @@ public class VacationRequestDTO {
 	private Long memberId;
 	
 	@Schema(description = "휴가 종류", example = "병가,연차")
-	private String type;
+	private String vacationType;
 	
 	@Schema(description = "휴가 시작일", example = "2026-03-25")
 	private LocalDate startDate;
@@ -28,4 +28,7 @@ public class VacationRequestDTO {
 	
 	@Schema(description = "대리 신청자 번호", example = "훈이")
 	private Long proxyMemberId;
+	
+	@Schema(description = "남은 휴가일수", example = "5")
+	private Long days;
 }
