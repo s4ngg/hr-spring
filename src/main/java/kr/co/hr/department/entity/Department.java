@@ -17,7 +17,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department {
@@ -38,5 +37,11 @@ public class Department {
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+    }
+    
+    public void update(String deptCode, String deptName, Member manager) {
+    	if (deptCode != null) this.deptCode = deptCode;
+    	if (deptName != null) this.deptName = deptName;
+    	this.manager = manager; // 널이여도 부서장 없음으로 처리
     }
 }
