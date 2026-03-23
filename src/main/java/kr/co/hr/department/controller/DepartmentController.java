@@ -23,43 +23,39 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
+	private final DepartmentService departmentService;
 
-    // 부서 목록 조회
-    @GetMapping
-    public ResponseEntity<List<DepartmentResponseDto>> getDepartmentList() {
-        return ResponseEntity.ok(departmentService.getDepartmentList());
-    }
+	// 부서 목록 조회
+	@GetMapping
+	public ResponseEntity<List<DepartmentResponseDto>> getDepartmentList() {
+		return ResponseEntity.ok(departmentService.getDepartmentList());
+	}
 
-    // 부서 검색
-    @GetMapping("/search")
-    public ResponseEntity<List<DepartmentResponseDto>> searchDepartment(
-            @RequestParam String deptName) {
-        return ResponseEntity.ok(departmentService.searchDepartment(deptName));
-    }
+	// 부서 검색
+	@GetMapping("/search")
+	public ResponseEntity<List<DepartmentResponseDto>> searchDepartment(@RequestParam("deptName") String deptName) {
+		return ResponseEntity.ok(departmentService.searchDepartment(deptName));
+	}
 
-    // 부서 추가
-    @PostMapping
-    public ResponseEntity<Void> createDepartment(
-            @RequestBody DepartmentRequestDto dto) {
-        departmentService.createDepartment(dto);
-        return ResponseEntity.ok().build();
-    }
+	// 부서 추가
+	@PostMapping
+	public ResponseEntity<Void> createDepartment(@RequestBody DepartmentRequestDto dto) {
+		departmentService.createDepartment(dto);
+		return ResponseEntity.ok().build();
+	}
 
-    // 부서 수정
-    @PutMapping("/{departmentId}")
-    public ResponseEntity<Void> updateDepartment(
-            @PathVariable Long departmentId,
-            @RequestBody DepartmentRequestDto dto) {
-        departmentService.updateDepartment(departmentId, dto);
-        return ResponseEntity.ok().build();
-    }
+	// 부서 수정
+	@PutMapping("/{departmentId}")
+	public ResponseEntity<Void> updateDepartment(@PathVariable("departmentId") Long departmentId,
+			@RequestBody DepartmentRequestDto dto) {
+		departmentService.updateDepartment(departmentId, dto);
+		return ResponseEntity.ok().build();
+	}
 
-    // 부서 삭제
-    @DeleteMapping("/{departmentId}")
-    public ResponseEntity<Void> deleteDepartment(
-            @PathVariable Long departmentId) {
-        departmentService.deleteDepartment(departmentId);
-        return ResponseEntity.ok().build();
-    }
+	// 부서 삭제
+	@DeleteMapping("/{departmentId}")
+	public ResponseEntity<Void> deleteDepartment(@PathVariable("departmentId") Long departmentId) {
+		departmentService.deleteDepartment(departmentId);
+		return ResponseEntity.ok().build();
+	}
 }
