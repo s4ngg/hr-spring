@@ -18,6 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class VacationQuota {
 	
+	@Id
     @OneToOne 
     @JoinColumn(name = "member_id")
     private Member member;
