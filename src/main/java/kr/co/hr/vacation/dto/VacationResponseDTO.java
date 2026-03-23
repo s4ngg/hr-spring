@@ -4,11 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor  
+@AllArgsConstructor
 @Schema(description = "휴가 내역 응답 정보")
 public class VacationResponseDTO {
 	
@@ -36,6 +40,5 @@ public class VacationResponseDTO {
 	@Schema(description = "신청 일시", example = "2026-03-21")
 	private LocalDateTime createdAt; // 신청일
 	
-	@Schema(description = "사유", example = "생일파티")
-	private String reason; 			// 사유
+
 }
