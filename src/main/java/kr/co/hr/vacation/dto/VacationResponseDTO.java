@@ -12,7 +12,7 @@ import lombok.Getter;
 @Schema(description = "휴가 내역 응답 정보")
 public class VacationResponseDTO {
 	
-	@Schema(description = "휴가신청 고유 번호", example = "101")
+	@Schema(description = "휴가 번호", example = "12")
 	private Long vacationId; 		// 수정을 대비한 고유 ID
 	
 	@Schema(description = "신청자 이름", example = "홍길동")
