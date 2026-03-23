@@ -35,7 +35,7 @@ public class Vacation {
     private LocalDate startDate; 
     private LocalDate endDate;   
     private Integer days;        
-    private Integer proxyMemberId;
+    private Long proxyMemberId;
     
     @PrePersist
     public void prePersist() {
