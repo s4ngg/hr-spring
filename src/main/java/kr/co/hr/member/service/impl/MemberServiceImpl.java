@@ -3,6 +3,8 @@ package kr.co.hr.member.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,5 +67,22 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
         memberRepository.delete(member);
+    }
+    
+    //직원 검색
+    @Override
+    @Transactional(readOnly = true)
+    public List<MemberResponseDTO> searchByName(String name) {
+        return memberRepository.findByNameContaining(name)
+                .stream()
+                .map(MemberResponseDTO::new)
+                .toList();
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MemberResponseDTO> getAllMembers(Pageable pageable) {
+    	return memberRepository.findAll(pageable)
+    			.map(MemberResponseDTO::new);
     }
 }

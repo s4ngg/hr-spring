@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 package kr.co.hr.department.entity;
 
 import kr.co.hr.member.entity.Member;
@@ -46,5 +45,3 @@ public class Department {
     	this.manager = manager; // 널이여도 부서장 없음으로 처리
     }
 }
-=======
->>>>>>> Stashed changes
