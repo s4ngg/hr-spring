@@ -38,7 +38,7 @@ public class AttendanceController {
     @Operation(summary = "특정 직원 근태 조회", description = "직원 ID로 해당 직원의 근태 목록을 조회합니다.")
     @GetMapping("/{memberId}")
     public ResponseEntity<List<AttendanceResponseDTO>> getAttendancesByMember(
-            @PathVariable Long memberId) {
+            @PathVariable("memberId") Long memberId) {
         return ResponseEntity.ok(attendanceService.getAttendancesByMember(memberId));
     }
 
@@ -54,7 +54,7 @@ public class AttendanceController {
     @Operation(summary = "퇴근 체크아웃", description = "특정 근태 기록에 퇴근 시간을 등록합니다.")
     @PutMapping("/check-out/{attendanceId}")
     public ResponseEntity<AttendanceResponseDTO> checkOut(
-            @PathVariable Long attendanceId,
+            @PathVariable("attendanceId")Long attendanceId,
             @RequestBody AttendanceRequestDTO requestDTO) {
         return ResponseEntity.ok(attendanceService.checkOut(attendanceId, requestDTO));
     }
@@ -63,7 +63,7 @@ public class AttendanceController {
     @Operation(summary = "근태 삭제", description = "특정 근태 기록을 삭제합니다.")
     @DeleteMapping("/{attendanceId}")
     public ResponseEntity<Void> deleteAttendance(
-            @PathVariable Long attendanceId) {
+            @PathVariable("attendanceId") Long attendanceId) {
         attendanceService.deleteAttendance(attendanceId);
         return ResponseEntity.noContent().build();
     }
