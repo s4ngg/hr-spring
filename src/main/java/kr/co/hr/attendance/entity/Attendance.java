@@ -11,17 +11,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-
 import kr.co.hr.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "attendance")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Attendance {
 
@@ -46,4 +44,18 @@ public class Attendance {
 
     private String status;
 
+    
+ // ✅ 출근용 메서드
+    @PrePersist
+    public void prePersist() {
+        this.workDate = LocalDate.now();
+        this.checkIn = LocalTime.now();
+        this.status = "출근";
+    }
+    
+ // ✅ 퇴근용 메서드
+    public void checkOut() {
+        this.checkOut = LocalTime.now();
+        this.status = "퇴근";
+    }
 }
