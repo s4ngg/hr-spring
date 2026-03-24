@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 /.metadata/
+
+### 어플리케이션 프로퍼티스 관리 ###
+.env
