@@ -1,10 +1,12 @@
 package kr.co.hr.attendance.service.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.co.hr.attendance.dto.AttendanceRequestDTO;
 import kr.co.hr.attendance.dto.AttendanceResponseDTO;
 import kr.co.hr.attendance.entity.Attendance;
@@ -19,6 +21,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     private final AttendanceRepository attendanceRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<AttendanceResponseDTO> getAllAttendances() {
         return attendanceRepository.findAll()
                 .stream()
@@ -27,6 +30,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AttendanceResponseDTO> getAttendancesByMember(Long memberId) {
         return attendanceRepository.findByMember_MemberId(memberId)
                 .stream()
@@ -36,6 +40,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
 
     // ✅ 누락된 메서드 구현
     @Override
+    @Transactional
     public AttendanceResponseDTO checkIn(AttendanceRequestDTO requestDTO) {
         Attendance attendance = new Attendance();
         attendance.setWorkDate(LocalDate.now());
@@ -45,6 +50,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     }
 
     @Override
+    @Transactional
     public AttendanceResponseDTO checkOut(Long attendanceId, AttendanceRequestDTO requestDTO) {
         Attendance attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new RuntimeException("근태 기록을 찾을 수 없습니다."));
@@ -53,6 +59,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     }
 
     @Override
+    @Transactional
     public void deleteAttendance(Long attendanceId) {
         attendanceRepository.deleteById(attendanceId);
     }

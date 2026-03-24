@@ -22,6 +22,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 전체 직원 조회
     @Override
+    @Transactional(readOnly = true)
     public List<MemberResponseDTO> getAllMembers() {
         return memberRepository.findAll()
                 .stream()
@@ -31,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 단일 직원 조회
     @Override
+    @Transactional(readOnly = true)
     public MemberResponseDTO getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
