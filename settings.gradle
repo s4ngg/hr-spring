@@ -1,3 +1,2 @@
-
-SECRET_REMOVEDProject.name = 'hr-spring'
+rootProject.name = 'hr-spring'
 
