@@ -49,6 +49,7 @@ public class VacationServiceImpl implements VacationService{
         
         Vacation vacation = Vacation.builder()
                 .member(member)
+                .vacationQuota(quota)
                 .vacationType(dto.getVacationType())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
