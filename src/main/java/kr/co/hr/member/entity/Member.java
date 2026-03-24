@@ -41,6 +41,7 @@ public class Member {
 	private String employType;
 	private String profileImage;
 	private LocalDate hireDate;
+	private String profileImage;
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
