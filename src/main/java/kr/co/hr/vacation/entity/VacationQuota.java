@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import kr.co.hr.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,4 +33,6 @@ public class VacationQuota {
     private Integer totalDays; 
     private Integer usedDays;  
 
+    @Version
+    private Long version;
 }
