@@ -85,4 +85,12 @@ public class MemberServiceImpl implements MemberService {
     	return memberRepository.findAll(pageable)
     			.map(MemberResponseDTO::new);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MemberResponseDTO> searchByName(String name, Pageable pageable) {
+        return memberRepository.findByNameContaining(name, pageable)
+                .map(MemberResponseDTO::new);
+    }
+    
 }

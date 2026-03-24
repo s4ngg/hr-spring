@@ -68,11 +68,13 @@ public class MemberController {
 	return ResponseEntity.noContent().build();
 	}
 	
+	// ✅ 직원 이름 검색 + 페이징 - 메서드명 변경 + @RequestParam 추가
 	@Operation(summary = "직원 이름 검색", description = "이름으로 직원을 검색합니다.")
 	@GetMapping("/search")
-	public ResponseEntity<Page<MemberResponseDTO>> getAllMembers(
+	public ResponseEntity<Page<MemberResponseDTO>> searchMembers(  // ✅ 메서드명 변경
+	        @RequestParam String name,                              // ✅ name 파라미터 추가
 	        @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC)
-	        Pageable pageable){
-	    return ResponseEntity.ok(memberService.getAllMembers(pageable));
+	        Pageable pageable) {
+	    return ResponseEntity.ok(memberService.searchByName(name, pageable)); // ✅ searchByName으로 변경
 	}
 }

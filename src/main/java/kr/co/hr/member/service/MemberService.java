@@ -23,4 +23,6 @@ public interface MemberService {
 	List<MemberResponseDTO> searchByName(String name);
 	
 	Page<MemberResponseDTO> getAllMembers(Pageable pageable);
+	
+	Page<MemberResponseDTO> searchByName(String name, Pageable pageable);
 }
