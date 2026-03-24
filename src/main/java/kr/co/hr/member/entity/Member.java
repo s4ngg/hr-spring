@@ -40,9 +40,8 @@ public class Member {
 	private String status;
 	private String employType;
 	private String profileImage;
-	
+
 	private LocalDate hireDate;
-	private String profileImage; // ← 이거 추가!
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -67,3 +66,4 @@ public class Member {
 		this.updatedAt = LocalDateTime.now();
 	}
 }
+
