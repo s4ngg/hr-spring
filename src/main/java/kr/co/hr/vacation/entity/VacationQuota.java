@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import kr.co.hr.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,14 +17,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VacationQuota {
-	
-    @OneToOne 
-    @JoinColumn(name = "member_id")
-    private Member member;
-    
-    private Integer quotaId;
-    private Integer year;
-    private Integer totalDays; 
-    private Integer usedDays;  
 
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long quotaId;
+    
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    private Integer year;
+    private Integer totalDays;
+    private Integer usedDays;
 }
