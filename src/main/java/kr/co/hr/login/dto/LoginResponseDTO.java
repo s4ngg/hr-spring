@@ -1,4 +1,4 @@
-package kr.co.hr.member.dto;
+package kr.co.hr.login.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +11,4 @@ public class LoginResponseDTO {
 	private String name;
 	private String role;
 	private String deptName;
-
 }
