@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import kr.co.hr.department.entity.Department;
+import kr.co.hr.member.dto.MemberRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
@@ -39,10 +39,9 @@ public class Member {
 	private String role;
 	private String status;
 	private String employType;
-	
-	
+	private String profileImage;
+
 	private LocalDate hireDate;
-	private String profileImage; // ← 이거 추가!
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -53,8 +52,18 @@ public class Member {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
+	public void update(MemberRequestDTO dto) {
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.role = dto.getRole();
+        this.status = dto.getStatus();
+        this.employType = dto.getEmployType();
+        this.hireDate = dto.getHireDate();
+        this.profileImage = dto.getProfileImage();
+    }
 	@PreUpdate
 	public void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
 }
+
