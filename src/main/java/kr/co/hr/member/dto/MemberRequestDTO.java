@@ -3,6 +3,9 @@ package kr.co.hr.member.dto;
 import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +23,19 @@ public class MemberRequestDTO {
 	@Schema(description = "사번", example = "EMP001")
 	private String employeeNo;
 	
+	@NotBlank(message = "이름은 필수입니다.")
 	@Schema(description = "직원 이름", example = "홍길동")
 	private String name;
 	
 	@Schema(description = "이메일", example = "hong@company.com")
 	private String email;
 	
+	@NotBlank(message = "비밀번호는 필수입니다.")
+	@Size(min = 8, max = 20, message = "비밀번호는 8~20자여야 합니다.")
+	@Pattern(
+		    regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$",
+		    message = "비밀번호는 영문 + 숫자 + 특수문자를 포함해야 합니다."
+		)
 	@Schema(description = "비밀번호", example = "password123!")
 	private String password;
 	

@@ -44,15 +44,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberResponseDTO createMember(MemberRequestDTO requestDTO) {
         Member member = new Member();
-        member.setEmployeeNo(requestDTO.getEmployeeNo());
-        member.setName(requestDTO.getName());
-        member.setEmail(requestDTO.getEmail());
-        member.setPassword(requestDTO.getPassword());
-        member.setRole(requestDTO.getRole());
-        member.setStatus(requestDTO.getStatus());
-        member.setEmployType(requestDTO.getEmployType());
-        member.setHireDate(requestDTO.getHireDate());
-        member.setProfileImage(requestDTO.getProfileImage());
+        member.update(requestDTO);
         return new MemberResponseDTO(memberRepository.save(member));
     }
 
@@ -62,13 +54,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDTO updateMember(Long memberId, MemberRequestDTO requestDTO) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
-        member.setName(requestDTO.getName());
-        member.setEmail(requestDTO.getEmail());
-        member.setRole(requestDTO.getRole());
-        member.setStatus(requestDTO.getStatus());
-        member.setEmployType(requestDTO.getEmployType());
-        member.setHireDate(requestDTO.getHireDate());
-        member.setProfileImage(requestDTO.getProfileImage());
+        member.update(requestDTO);
         return new MemberResponseDTO(member);
     }
 
