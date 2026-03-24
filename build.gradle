@@ -33,8 +33,23 @@ dependencies {
 	
 	annotationProcessor 'org.projectlombok:lombok:1.18.38'
 	compileOnly 'org.projectlombok:lombok:1.18.38'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaExec).configureEach {
+    def envFile = file('.env')
+    if (envFile.exists()) {
+        envFile.eachLine { line ->
+            if (line && !line.startsWith('#')) {
+                def parts = line.tokenize('=')
+                if (parts.size() == 2) {
+                    environment(parts[0].trim(), parts[1].trim())
+                }
+            }
+        }
+    }
 }
