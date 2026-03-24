@@ -71,6 +71,7 @@ public class VacationServiceImpl implements VacationService{
     
     
     
+    
     // 휴가 신청 내역 조회 로직
     @Override
     @Transactional(readOnly = true)
