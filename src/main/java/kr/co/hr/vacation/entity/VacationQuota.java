@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class VacationQuota {
 
-    @Id  // ← 이게 있나요?
+    @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quotaId;
     
