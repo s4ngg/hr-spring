@@ -42,12 +42,19 @@ public class DepartmentServiceImpl implements DepartmentService {
             .map(this::toDto)
             .collect(Collectors.toList());
     }
+    
     @Transactional(readOnly = true)
     @Override
     public List<DepartmentResponseDto> searchDepartment(String deptName) {
-        return departmentRepository.findByDeptNameContaining(deptName).stream()
-            .map(this::toDto)
-            .collect(Collectors.toList());
+        List<Department> result = departmentRepository.findByDeptNameContaining(deptName);
+        
+        if (result.isEmpty()) {
+            throw new RuntimeException("검색 결과가 없습니다.");
+        }
+        
+        return result.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
     
     @Transactional
@@ -84,7 +91,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
         }
 
-        // 엔티티 update 메서드 호출 - save() 없어도 더티체킹으로 자동 반영!
+        // 엔티티 update 메서드 호출 - save() 없어도 더티체킹으로 자동 반영
         department.update(dto.getDeptCode(), dto.getDeptName(), manager);
     }
 
