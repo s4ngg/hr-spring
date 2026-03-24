@@ -58,7 +58,7 @@ public class MemberController {
 	// 직원 삭제
 	@Operation(summary = "직원 삭제", description = "특정 직원을 삭제합니다.")
 	@DeleteMapping("/{memberId}")
-	public ResponseEntity<Void> deleteMember(@PathVariable Long memberId) {
+	public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
 	memberService.deleteMember(memberId);
 	return ResponseEntity.noContent().build();
 	}
