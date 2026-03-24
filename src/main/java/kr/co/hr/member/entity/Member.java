@@ -42,6 +42,7 @@ public class Member {
 	private String profileImage;
 	
 	private LocalDate hireDate;
+	private String profileImage; // ← 이거 추가!
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
