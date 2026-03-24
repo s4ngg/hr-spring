@@ -1,7 +1,5 @@
 package kr.co.hr.attendance.service.impl;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -43,8 +41,6 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     @Transactional
     public AttendanceResponseDTO checkIn(AttendanceRequestDTO requestDTO) {
         Attendance attendance = new Attendance();
-        attendance.setWorkDate(LocalDate.now());
-        attendance.setCheckIn(LocalTime.now());
         // requestDTO에서 필요한 값 세팅 (memberId 등)
         return new AttendanceResponseDTO(attendanceRepository.save(attendance));
     }
@@ -54,7 +50,7 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     public AttendanceResponseDTO checkOut(Long attendanceId, AttendanceRequestDTO requestDTO) {
         Attendance attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new RuntimeException("근태 기록을 찾을 수 없습니다."));
-        attendance.setCheckOut(LocalTime.now());
+        attendance.checkOut();
         return new AttendanceResponseDTO(attendanceRepository.save(attendance));
     }
 

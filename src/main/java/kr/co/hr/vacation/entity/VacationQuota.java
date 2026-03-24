@@ -1,8 +1,6 @@
 package kr.co.hr.vacation.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -11,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Getter @Setter
@@ -21,7 +20,7 @@ public class VacationQuota {
     @OneToOne 
     @JoinColumn(name = "member_id")
     private Member member;
-    
+    @Id
     private Integer quotaId;
     private Integer year;
     private Integer totalDays; 
