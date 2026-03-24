@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.hr.member.entity.Member;
+import kr.co.hr.member.repository.MemberRepository;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.entity.Vacation;
@@ -25,13 +26,13 @@ public class VacationServiceImpl implements VacationService{
 	
 	private final VacationRepository vacationRepository;
     private final VacationQuotaRepository quotaRepository;
-    
+    private final MemberRepository memberRepository;
     // 휴가 신청 로직
     @Override
     @Transactional
     public void requestVacation(VacationRequestDTO dto) {
     	// 멤버 레포 필요             신청자 정보 가져오기
-    	Member member = meberRepository.findById(dto.getMemberId()) 
+    	Member member = memberRepository.findById(dto.getMemberId()) 
     			.orElseThrow(() -> new RuntimeException("직원 정보를 찾을 수 없습니다."));
     	
     	//잔여 휴가 정보 가져오기
