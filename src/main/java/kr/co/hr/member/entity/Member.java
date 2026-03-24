@@ -62,6 +62,6 @@ public class Member {
     }
 	@PreUpdate
 	public void preUpdate() {
-		this.updatedAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();   
 	}
 }
