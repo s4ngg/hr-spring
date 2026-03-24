@@ -3,6 +3,8 @@ package kr.co.hr.vacation.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import kr.co.hr.vacation.entity.Vacation;
 
@@ -11,7 +13,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     List<Vacation> findByMember_MemberIdOrderByCreatedAtDesc(Long memberId);
 
     // 2. 승인대기 중인 휴가 목록 조회 (관리자용)
-    List<Vacation> findByStatus(String status);
-    
-    int countByMember_MemberIdAndStatus(Long memberId, String status);
+    @Query("select v from Vacation v join fetch v.member where v.status = :status")
+    List<Vacation> findByStatusWithMember(@Param("status") String status);
+
 } 
