@@ -43,9 +43,17 @@ public class VacationServiceImpl implements VacationService{
     	
     	// 잔여 일수 검증하기 (남은 개수보다 신청한 갯수가 많으면 에러!)
     	int remainingDays = quota.getTotalDays() - quota.getUsedDays();
+    	
+    	if (dto.getStartDate().isAfter(dto.getEndDate())) {
+    	    throw new RuntimeException("휴가 시작일은 종료일보다 빨라야 합니다.");
+    	}
+    	
         if (remainingDays < dto.getDays()) {
             throw new RuntimeException("잔여 휴가가 부족합니다.");
         	}
+        
+        
+        
         
         Vacation vacation = Vacation.builder()
                 .member(member)
