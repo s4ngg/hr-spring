@@ -10,7 +10,7 @@ import kr.co.hr.dashboard.service.DashboardService;
 import kr.co.hr.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-//@Tag(name = "Dashboard", description = "대시보드 API")
+@Tag(name = "Dashboard", description = "대시보드 API")
 //@RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
