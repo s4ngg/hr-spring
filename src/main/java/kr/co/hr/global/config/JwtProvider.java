@@ -22,15 +22,14 @@ public class JwtProvider {
 	}
     
 	
-	public String createToken(String loginId, String name) {
+	public String createToken(JwtUserInfoDTO jwtUserDTO) {
         Date now = new Date();
-	
-    // 만료 시간 (1시간)
-    long expireTime = jwtProperties.getExpirationTime();
+        long expireTime = jwtProperties.getExpirationTime();
 
         return Jwts.builder()
-                .setSubject(loginId)
-                .claim("name", name)
+                .setSubject(jwtUserDTO.getLoginId())
+                .claim("name", jwtUserDTO.getName())
+                // .claim("role", jwtUserDTO.getRole()) // 권한 정보 추가
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expireTime))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
