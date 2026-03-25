@@ -29,7 +29,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(jwtUserDTO.getLoginId())
                 .claim("name", jwtUserDTO.getName())
-                // .claim("role", jwtUserDTO.getRole()) // 권한 정보 추가
+                .claim("role", jwtUserDTO.getRole()) // 권한 정보 추가
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expireTime))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
