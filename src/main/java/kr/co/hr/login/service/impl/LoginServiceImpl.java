@@ -27,11 +27,11 @@ public class LoginServiceImpl implements LoginService{
     	
         // 1. 이메일 또는 사번 으로 통합 검색
         Member member = memberRepository.findByEmailOrEmployeeNo(dto.getLoginId(), dto.getLoginId())
-                .orElseThrow(() -> new RuntimeException("사번 또는 이메일이 존재하지 않습니다."));
+                .orElseThrow(() -> new RuntimeException("아이디 또는 비밀번호가 올바르지 않습니다."));
         
         // 2. 비밀번호 검증 
         if (!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
-        	throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        	throw new RuntimeException("아이디 또는 비밀번호가 올바르지 않습니다.");
         }
         
         
