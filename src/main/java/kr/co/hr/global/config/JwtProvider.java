@@ -4,32 +4,36 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor // 생성자 주입을 위해 추가
 public class JwtProvider {
-	// 비밀키 (최소 32자 이상)
-	@Value("${jwt.secret}")
-    private String secret;
-    private final Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    
-    // 만료 시간 (1시간)
-    private final long expireTime = 3600000L;
+		
+	private final JwtProperties jwtProperties;
 
-    public String createToken(String loginId, String name) {
+	private Key getSigningKey() {
+	    return Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+	}
+    
+	
+	public String createToken(String loginId, String name) {
         Date now = new Date();
-        
+	
+    // 만료 시간 (1시간)
+    long expireTime = jwtProperties.getExpirationTime();
+
         return Jwts.builder()
                 .setSubject(loginId)
                 .claim("name", name)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expireTime))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
