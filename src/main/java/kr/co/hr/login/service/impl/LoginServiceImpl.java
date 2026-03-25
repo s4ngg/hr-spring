@@ -2,6 +2,7 @@ package kr.co.hr.login.service.impl;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.hr.global.config.JwtProvider;
 import kr.co.hr.global.config.JwtUserInfoDTO;
@@ -23,6 +24,7 @@ public class LoginServiceImpl implements LoginService{
     
     
     @Override
+    @Transactional(readOnly = true)
     public LoginResponseDTO authenticate(LoginRequestDTO dto) {
     	
     	
