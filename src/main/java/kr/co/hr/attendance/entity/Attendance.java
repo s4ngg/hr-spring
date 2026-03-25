@@ -44,8 +44,8 @@ public class Attendance {
 
     private String status;
 
+    private Double overtimeHours;
     
- // ✅ 출근용 메서드
     @PrePersist
     public void prePersist() {
         this.workDate = LocalDate.now();
@@ -53,7 +53,6 @@ public class Attendance {
         this.status = "출근";
     }
     
- // ✅ 퇴근용 메서드
     public void checkOut() {
         this.checkOut = LocalTime.now();
         this.status = "퇴근";
