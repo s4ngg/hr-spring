@@ -51,9 +51,12 @@ public class Member {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
-	public void update(MemberRequestDTO dto) {
+	public void update(MemberRequestDTO dto, Department department) {
+		this.employeeNo = dto.getEmployeeNo();
+	    this.department = department;
         this.name = dto.getName();
         this.email = dto.getEmail();
+        this.password = dto.getPassword();
         this.role = dto.getRole();
         this.status = dto.getStatus();
         this.employType = dto.getEmployType();

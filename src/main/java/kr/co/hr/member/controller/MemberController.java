@@ -2,9 +2,9 @@ package kr.co.hr.member.controller;
 
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import kr.co.hr.global.response.ApiResponse;
 import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.service.MemberService;
@@ -29,52 +31,47 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController {
-	
-	private final MemberService memberService;
-	
-	// 전체 직원 조회
-	@Operation(summary = "전체 직원 조회", description = "등록된 모든 직원 목록을 조회합니다.")
-	@GetMapping
-	public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
-	    return ResponseEntity.ok(memberService.getAllMembers());
-	}
-	
-	// 단일 직원 조회
-	@Operation(summary = "단일 직원 조회", description = "특정 직원의 정보를 조회합니다.")
-	@GetMapping("/{memberId}")
-	public ResponseEntity<MemberResponseDTO> getMember(@PathVariable("memberId") Long memberId) {
-		return ResponseEntity.ok(memberService.getMember(memberId));
-	}
-	
-	// 직원 등록
-	@Operation(summary = "직원 등록", description = "새로운 직원을 등록합니다.")
-	@PostMapping
-	public ResponseEntity<MemberResponseDTO> createMember(@RequestBody MemberRequestDTO requestDTO) {
-		return ResponseEntity.ok(memberService.createMember(requestDTO));
-	}
-	
-	// 직원 수정
-	@Operation(summary = "직원 정보 수정", description = "특정 직원의 정보를 수정합니다.")
-	@PutMapping("/{memberId}")
-	public ResponseEntity<MemberResponseDTO> updateMember(@PathVariable("memberId") Long memberId, @RequestBody MemberRequestDTO requestDTO) {
-		return ResponseEntity.ok(memberService.updateMember(memberId, requestDTO));
-	}
-	
-	// 직원 삭제
-	@Operation(summary = "직원 삭제", description = "특정 직원을 삭제합니다.")
-	@DeleteMapping("/{memberId}")
-	public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
-	memberService.deleteMember(memberId);
-	return ResponseEntity.noContent().build();
-	}
-	
-	// ✅ 직원 이름 검색 + 페이징 - 메서드명 변경 + @RequestParam 추가
-	@Operation(summary = "직원 이름 검색", description = "이름으로 직원을 검색합니다.")
-	@GetMapping("/search")
-	public ResponseEntity<Page<MemberResponseDTO>> searchMembers(  // ✅ 메서드명 변경
-	        @RequestParam String name,                              // ✅ name 파라미터 추가
-	        @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC)
-	        Pageable pageable) {
-	    return ResponseEntity.ok(memberService.searchByName(name, pageable)); // ✅ searchByName으로 변경
-	}
+
+    private final MemberService memberService;
+
+    @Operation(summary = "전체 직원 조회")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<MemberResponseDTO>>> getAllMembers() {
+        return ResponseEntity.ok(ApiResponse.success("직원 목록 조회 성공", memberService.getAllMembers()));
+    }
+
+    @Operation(summary = "단일 직원 조회")
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(@PathVariable("memberId") Long memberId) {
+        return ResponseEntity.ok(ApiResponse.success("직원 조회 성공", memberService.getMember(memberId)));
+    }
+
+    @Operation(summary = "직원 등록")
+    @PostMapping
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> createMember(@Valid @RequestBody MemberRequestDTO requestDTO) {
+        return ResponseEntity.ok(ApiResponse.success("직원 등록 성공", memberService.createMember(requestDTO)));
+    }
+
+    @Operation(summary = "직원 정보 수정")
+    @PutMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> updateMember(
+            @PathVariable("memberId") Long memberId,
+            @Valid @RequestBody MemberRequestDTO requestDTO) {
+        return ResponseEntity.ok(ApiResponse.success("직원 수정 성공", memberService.updateMember(memberId, requestDTO)));
+    }
+
+    @Operation(summary = "직원 삭제")
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable("memberId") Long memberId) {
+        memberService.deleteMember(memberId);
+        return ResponseEntity.ok(ApiResponse.success("직원 삭제 성공"));
+    }
+
+    @Operation(summary = "직원 이름 검색")
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> searchMembers(
+            @RequestParam("name") String name,
+            @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success("직원 검색 성공", memberService.searchByName(name, pageable)));
+    }
 }
