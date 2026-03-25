@@ -1,22 +1,27 @@
 package kr.co.hr.attendance.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import kr.co.hr.attendance.dto.AttendanceRequestDTO;
 import kr.co.hr.attendance.dto.AttendanceResponseDTO;
 import kr.co.hr.attendance.entity.Attendance;
 import kr.co.hr.attendance.repository.AttendanceRepository;
 import kr.co.hr.attendance.service.AttendanceService;
+import kr.co.hr.member.entity.Member;
+import kr.co.hr.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AttendancesServiceImpl implements AttendanceService {  // ✅ Attendances → Attendance (오타 수정)
+public class AttendancesServiceImpl implements AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
+    private final MemberRepository memberRepository;
+    
 
     @Override
     @Transactional(readOnly = true)
@@ -36,12 +41,18 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
                 .toList();
     }
 
-    // ✅ 누락된 메서드 구현
     @Override
     @Transactional
     public AttendanceResponseDTO checkIn(AttendanceRequestDTO requestDTO) {
-        Attendance attendance = new Attendance();
-        // requestDTO에서 필요한 값 세팅 (memberId 등)
+        Member member = memberRepository.findById(requestDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+
+        Attendance attendance = Attendance.checkIn(
+                member,
+                LocalDate.now(),
+                LocalTime.now()
+        );
+
         return new AttendanceResponseDTO(attendanceRepository.save(attendance));
     }
 
@@ -58,5 +69,20 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     @Transactional
     public void deleteAttendance(Long attendanceId) {
         attendanceRepository.deleteById(attendanceId);
+    }
+
+    @Transactional
+    public void processAbsent(LocalDate date) {
+        List<Long> attendedMemberIds = attendanceRepository
+                .findMemberIdsByWorkDate(date);
+
+        List<Member> absentMembers = memberRepository
+                .findByMemberIdNotIn(attendedMemberIds);
+
+        List<Attendance> absentList = absentMembers.stream()
+                .map(m -> Attendance.absent(m, date))
+                .collect(Collectors.toList());
+
+        attendanceRepository.saveAll(absentList);
     }
 }

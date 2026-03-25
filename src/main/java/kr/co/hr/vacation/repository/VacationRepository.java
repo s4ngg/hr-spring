@@ -12,4 +12,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     // 2. 승인대기 중인 휴가 목록 조회 (관리자용)
     List<Vacation> findByStatus(String status);
+    
+    int countByMember_MemberIdAndStatus(Long memberId, String status);
 } 
