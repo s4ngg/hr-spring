@@ -18,11 +18,16 @@ public class LoginServiceImpl implements LoginService{
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     
+    
+    
     @Override
     public String authenticate(LoginRequestDTO dto) {
+    	
+    	
         // 1. 이메일 또는 사번 으로 통합 검색
         Member member = memberRepository.findByEmailOrEmployeeNo(dto.getLoginId(), dto.getLoginId())
                 .orElseThrow(() -> new RuntimeException("사번 또는 이메일이 존재하지 않습니다."));
+        
 
         // 2. 비밀번호 검증 
         if (!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
