@@ -1,10 +1,9 @@
 package kr.co.hr.dashboard.service.impl;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,62 +40,55 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDate today = LocalDate.now();
         Attendance todayAttendance = attendanceRepository
                 .findByMember_MemberIdAndWorkDate(memberId, today)
-                .stream().findFirst().orElse(null);
+                .orElse(null);
 
-        LocalTime checkIn = todayAttendance != null ? todayAttendance.getCheckIn() : null;
-        LocalTime checkOut = todayAttendance != null ? todayAttendance.getCheckOut() : null;
-        String todayStatus = todayAttendance != null ? todayAttendance.getStatus() : "미출근";
-
-        // 3. 휴가 할당 조회 (올해)
+        // 3. 휴가 할당 조회
         int currentYear = today.getYear();
         VacationQuota quota = vacationQuotaRepository
                 .findByMember_MemberIdAndYear(memberId, currentYear)
                 .orElse(null);
 
-        Integer totalDays = quota != null ? quota.getTotalDays() : 0;
-        Integer usedDays = quota != null ? quota.getUsedDays() : 0;
-        Integer remainDays = totalDays - usedDays;
-
         // 4. 이번 달 출근 일수
         YearMonth currentMonth = YearMonth.now();
         LocalDate firstDay = currentMonth.atDay(1);
         LocalDate lastDay = currentMonth.atEndOfMonth();
-
         int monthlyWorkDays = attendanceRepository
                 .countByMember_MemberIdAndWorkDateBetween(memberId, firstDay, lastDay);
-
-        // 이번 달 평일 수 (간단하게 처리)
-        int monthlyTotalDays = 22;
 
         // 5. 대기 중인 휴가 승인 건수
         int pendingCount = vacationRepository
                 .countByMember_MemberIdAndStatus(memberId, "PENDING");
 
-        // 6. 최근 근태 이력 (최근 5개)
+        // 6. 최근 근태 이력
         List<Attendance> recentList = attendanceRepository
                 .findTop5ByMember_MemberIdOrderByWorkDateDesc(memberId);
 
-        List<DashboardResponseDto.RecentAttendance> recentAttendances = recentList.stream()
-                .map(a -> DashboardResponseDto.RecentAttendance.builder()
-                        .workDate(a.getWorkDate())
-                        .checkIn(a.getCheckIn())
-                        .checkOut(a.getCheckOut())
-                        .workHours(a.getWorkHours())
-                        .status(a.getStatus())
-                        .build())
-                .collect(Collectors.toList());
-
-        return DashboardResponseDto.builder()
-                .memberName(member.getName())
-                .todayCheckIn(checkIn)
-                .todayCheckOut(checkOut)
-                .todayStatus(todayStatus)
-                .remainVacationDays(remainDays)
-                .totalVacationDays(totalDays)
-                .monthlyWorkDays(monthlyWorkDays)
-                .monthlyTotalDays(monthlyTotalDays)
-                .pendingVacationCount(pendingCount)
-                .recentAttendances(recentAttendances)
-                .build();
+        
+        int monthlyTotalDays = calculateWeekdays(firstDay, lastDay);
+        
+        return DashboardResponseDto.of(
+                member,
+                todayAttendance,
+                quota,
+                monthlyWorkDays,
+                monthlyTotalDays,
+                pendingCount,
+                recentList
+        );
     }
+    
+    // 요번달에 출근 일수를 총으로 봐야하니
+    private int calculateWeekdays(LocalDate firstDay, LocalDate lastDay) {
+        int weekdays = 0;
+        LocalDate date = firstDay;
+        while (!date.isAfter(lastDay)) {
+            if (date.getDayOfWeek() != DayOfWeek.SATURDAY
+                    && date.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                weekdays++;
+            }
+            date = date.plusDays(1);
+        }
+        return weekdays;
+    }
+    
 }

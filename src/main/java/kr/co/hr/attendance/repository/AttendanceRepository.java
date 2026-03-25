@@ -17,7 +17,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long>{
 	List<Attendance> findByWorkDate(LocalDate date);
 	
 	// 특정 직원 + 특정 날짜 근태 조회
-	List <Attendance> findByMember_MemberIdAndWorkDate(Long memberId, LocalDate date);
+	Optional <Attendance> findByMember_MemberIdAndWorkDate(Long memberId, LocalDate date);
 	
 	// 특정 직원 + 기간별 근태 조회
 	List<Attendance> findByMember_MemberIdAndWorkDateBetween(Long memberId, LocalDate start, LocalDate end);
