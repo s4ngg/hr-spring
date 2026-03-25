@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -13,7 +14,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtProvider {
 	// 비밀키 (최소 32자 이상)
-    private final String secret = "architect-ledger-hr-project-secret-key-2026";
+	@Value("${jwt.secret}")
+    private String secret;
     private final Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     
     // 만료 시간 (1시간)
