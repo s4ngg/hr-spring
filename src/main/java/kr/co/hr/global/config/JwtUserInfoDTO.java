@@ -8,6 +8,6 @@ import lombok.Getter;
 public class JwtUserInfoDTO {
 	private String loginId;
     private String name;
-//    private String role;	// 추후 칠요하면 추가 
+    private String role;	// 추후 칠요하면 추가 
 //    private String email;	// 추후 필요하면 추가
 }
