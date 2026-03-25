@@ -111,9 +111,11 @@ public class DashboardResponseDto {
         private LocalTime checkOut;
         private Double workHours;
         private String status;
+        private Long attendanceId;
         
         public static RecentAttendance from(Attendance a) {
         	return RecentAttendance.builder()
+        			.attendanceId(a.getAttendanceId())
                     .workDate(a.getWorkDate())
                     .checkIn(a.getCheckIn())
                     .checkOut(a.getCheckOut())
