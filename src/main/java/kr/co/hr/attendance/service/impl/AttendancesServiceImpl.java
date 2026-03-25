@@ -1,7 +1,10 @@
 package kr.co.hr.attendance.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,12 +14,15 @@ import kr.co.hr.attendance.entity.Attendance;
 import kr.co.hr.attendance.repository.AttendanceRepository;
 import kr.co.hr.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
+import kr.co.hr.member.entity.Member;
+import kr.co.hr.member.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AttendancesServiceImpl implements AttendanceService {  // ✅ Attendances → Attendance (오타 수정)
 
     private final AttendanceRepository attendanceRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -36,12 +42,22 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
                 .toList();
     }
 
-    // ✅ 누락된 메서드 구현
     @Override
     @Transactional
     public AttendanceResponseDTO checkIn(AttendanceRequestDTO requestDTO) {
+        Member member = memberRepository.findById(requestDTO.getMemberId())
+                .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+
+        LocalTime now = LocalTime.now();
+        LocalTime nineAM = LocalTime.of(9, 0);
+        String status = now.isAfter(nineAM) ? "LATE" : "NORMAL";
+
         Attendance attendance = new Attendance();
-        // requestDTO에서 필요한 값 세팅 (memberId 등)
+        attendance.setMember(member);
+        attendance.setWorkDate(LocalDate.now());
+        attendance.setCheckIn(now);
+        attendance.setStatus(status);
+
         return new AttendanceResponseDTO(attendanceRepository.save(attendance));
     }
 
@@ -58,5 +74,28 @@ public class AttendancesServiceImpl implements AttendanceService {  // ✅ Atten
     @Transactional
     public void deleteAttendance(Long attendanceId) {
         attendanceRepository.deleteById(attendanceId);
+    }
+    
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
+    @Transactional
+    public void processAbsent() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        
+        // 모든 직원 조회
+        List<Member> allMembers = memberRepository.findAll();
+        
+        for (Member member : allMembers) {
+            // 어제 출근 기록 없으면 ABSENT 처리
+            boolean hasAttendance = attendanceRepository
+                    .existsByMember_MemberIdAndWorkDate(member.getMemberId(), yesterday);
+            
+            if (!hasAttendance) {
+                Attendance absent = new Attendance();
+                absent.setMember(member);
+                absent.setWorkDate(yesterday);
+                absent.setStatus("ABSENT");
+                attendanceRepository.save(absent);
+            }
+        }
     }
 }

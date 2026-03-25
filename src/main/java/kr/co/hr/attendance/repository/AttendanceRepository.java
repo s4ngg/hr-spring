@@ -26,4 +26,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long>{
 	Optional<Attendance> findTopByMember_MemberIdAndWorkDateOrderByCheckInAsc(Long memberId, LocalDate date);
 	int countByMember_MemberIdAndWorkDateBetween(Long memberId, LocalDate start, LocalDate end);
 	List<Attendance> findTop5ByMember_MemberIdOrderByWorkDateDesc(Long memberId);
+	
+	boolean existsByMember_MemberIdAndWorkDate(Long memberId, LocalDate date);
 }

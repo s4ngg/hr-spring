@@ -16,10 +16,11 @@ import jakarta.persistence.Table;
 import kr.co.hr.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "attendance")
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 public class Attendance {
 
