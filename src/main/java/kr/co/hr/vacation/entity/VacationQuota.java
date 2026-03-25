@@ -36,3 +36,4 @@ public class VacationQuota {
     @Version
     private Long version;
 }
+
