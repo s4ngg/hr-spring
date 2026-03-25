@@ -2,6 +2,7 @@ package kr.co.hr.attendance.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,9 +17,13 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long>{
 	List<Attendance> findByWorkDate(LocalDate date);
 	
 	// 특정 직원 + 특정 날짜 근태 조회
-	List <Attendance> findByMember_MemberIdAndWorkDate(Long memberId, LocalDate date);
+	Optional <Attendance> findByMember_MemberIdAndWorkDate(Long memberId, LocalDate date);
 	
 	// 특정 직원 + 기간별 근태 조회
 	List<Attendance> findByMember_MemberIdAndWorkDateBetween(Long memberId, LocalDate start, LocalDate end);
 
+	// 대시보드용 추가
+	Optional<Attendance> findTopByMember_MemberIdAndWorkDateOrderByCheckInAsc(Long memberId, LocalDate date);
+	int countByMember_MemberIdAndWorkDateBetween(Long memberId, LocalDate start, LocalDate end);
+	List<Attendance> findTop5ByMember_MemberIdOrderByWorkDateDesc(Long memberId);
 }
