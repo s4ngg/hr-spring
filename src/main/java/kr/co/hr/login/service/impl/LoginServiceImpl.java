@@ -47,7 +47,9 @@ public class LoginServiceImpl implements LoginService{
         return LoginResponseDTO.builder()
                 .memberId(member.getMemberId())     
                 .employeeNo(member.getEmployeeNo())  
-                .name(member.getName())               
+                .name(member.getName())         
+                
+                // role 과 departmentId 부분은 추후 Optional을 사용하여 코드를 깔끔하게 하면 좋음 
                 .role(member.getRole()) 
                 .departmentId(member.getDepartment() != null ? member.getDepartment().getDepartmentId() : null) // 부서번호
                 .token(token)                     
