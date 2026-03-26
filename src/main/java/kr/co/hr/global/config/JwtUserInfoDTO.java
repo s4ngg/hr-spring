@@ -6,8 +6,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class JwtUserInfoDTO {
-	private String loginId;
+	private Long memberId;    // DB의 member_id (PK)
+    private String loginId;   // 사번 + 이메일 합친 값
     private String name;
-    private String role;	// 추후 칠요하면 추가 
-//    private String email;	// 추후 필요하면 추가
+    private String role;	
+
 }
