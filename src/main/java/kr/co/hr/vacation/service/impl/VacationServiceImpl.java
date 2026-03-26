@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
+import kr.co.hr.vacation.dto.VacationAdminRequestDTO;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.entity.Vacation;
@@ -105,7 +106,7 @@ public class VacationServiceImpl implements VacationService{
 
             return VacationResponseDTO.builder()
                     .vacationId(v.getVacationId())
-                    .memberName(v.getMember().getName()) // 신청자 이름 추가!
+                    .memberName(v.getMember().getName()) 
                     .vacationType(v.getVacationType())
                     .startDate(v.getStartDate())
                     .endDate(v.getEndDate())
@@ -114,8 +115,18 @@ public class VacationServiceImpl implements VacationService{
                     .createdAt(v.getCreatedAt())
                     .build();
         }).collect(Collectors.toList());
+    }
+    
+    
+    
+   @Override
+   @Transactional
+    public void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto) {
+    	Vacationvacation = vacationRepository.findByid(vacationId)
+    		
     	
     }
+    
     
     
     
