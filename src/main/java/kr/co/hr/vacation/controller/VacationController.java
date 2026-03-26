@@ -38,12 +38,4 @@ public class VacationController {
         List<VacationResponseDTO> list = vacationService.getMyVacationHistory(memberId);
         return ResponseEntity.ok(ApiResponse.success("내 휴가 내역 조회 성공", list));
     }
-
-    // 3. 승인 대기 목록 조회 (관리자용)
-    @Operation(summary = "승인 대기 목록 조회", description = "관리자가 승인해야 할 휴가 목록을 조회합니다.")
-    @GetMapping("/pending")
-    public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getPendingVacations() {
-        List<VacationResponseDTO> list = vacationService.getPendingVacations();
-        return ResponseEntity.ok(ApiResponse.success("승인 대기 목록 조회 성공", list));
-    }
 }
