@@ -39,7 +39,7 @@ public class JwtProvider {
                 .compact();
     }
 	
-	
+	// 토큰에서 PK(Long)으추출
 	public Long getLoginIdFromToken(String token) {
 		String subject = Jwts.parserBuilder()
 	            .setSigningKey(getSigningKey())
@@ -48,6 +48,8 @@ public class JwtProvider {
 	            .getBody()
 	            .getSubject();
 		return Long.valueOf(subject);
+		
+		
 	}
 	
 	
