@@ -14,6 +14,7 @@ import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.entity.Vacation;
 import kr.co.hr.vacation.entity.VacationQuota;
+import kr.co.hr.vacation.enums.VacationStatus;
 import kr.co.hr.vacation.repository.VacationQuotaRepository;
 import kr.co.hr.vacation.repository.VacationRepository;
 import kr.co.hr.vacation.service.VacationService;
@@ -62,7 +63,7 @@ public class VacationServiceImpl implements VacationService{
                 .vacationType(dto.getVacationType())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
-                .status("PENDING")
+                .status(VacationStatus.PENDING)
                 .build();
         
         vacationRepository.save(vacation);
@@ -85,7 +86,7 @@ public class VacationServiceImpl implements VacationService{
                     .vacationType(v.getVacationType())
                     .startDate(v.getStartDate())
                     .endDate(v.getEndDate())
-                    .status(v.getStatus())
+                    .status(v.getStatus().name())
                     .createdAt(v.getCreatedAt())
                     .build())
             .collect(Collectors.toList());
@@ -111,7 +112,7 @@ public class VacationServiceImpl implements VacationService{
                     .startDate(v.getStartDate())
                     .endDate(v.getEndDate())
                     .days((int) dayDiff)
-                    .status(v.getStatus())
+                    .status(v.getStatus().name())
                     .createdAt(v.getCreatedAt())
                     .build();
         }).collect(Collectors.toList());
@@ -122,8 +123,36 @@ public class VacationServiceImpl implements VacationService{
    @Override
    @Transactional
     public void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto) {
-    	Vacationvacation = vacationRepository.findByid(vacationId)
+	   // 휴가 신청 내역 조회
+    	Vacation vacation = vacationRepository.findById(vacationId)
+    			.orElseThrow(() -> new RuntimeException("해당 휴가 신청 건을 찾을 수 없습니다."));
+    	
+    	// 이미 처리된 건인지 확인 (PENDING 상태일 때만 처리가 가능)
+    	if (vacation.getStatus() != VacationStatus.PENDING) {
+    		throw new RuntimeException("이미 처리 완료된 신청 건입니다.");
+    	}
+    	
+    	// 상태 업데이트 (DTO 문자열을 Enum으로 변환하여 저장)
+    	VacationStatus newStatus = VacationStatus.valueOf(dto.getStatus());
+    	vacation.setStatus(newStatus);
+    	
+    	// 승인인 경우 연차 (Quota)에서 사용 일수 업데이트 
+    	if (newStatus == VacationStatus.APPROVED) {
     		
+    		// 날짜 차이 계산
+    		long days = java.time.temporal.ChronoUnit.DAYS.between(vacation.getStartDate(), vacation.getEndDate()) + 1;
+    		
+    		// 연관된  휴가 (Quota)에서 정보 가져오기 
+    		VacationQuota quota = vacation.getVacationQuota();
+    		
+    		// 기존 사용 일수 + 이번에 승인된 일수 
+    		quota.setUsedDays(quota.getUsedDays() + (int) days);
+    	}
+    	
+    	// 5. 반려(REJECTED) 시 사유 저장 
+        // if (newStatus == VacationStatus.REJECTED) {
+        //     vacation.setRejectReason(dto.getRejectReason());
+        // }
     	
     }
     
