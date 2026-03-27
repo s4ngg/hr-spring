@@ -76,7 +76,7 @@
 ## 팀원 및 역할
 | 이름 | 역할 | 기능 구현 |
 |------|------|------|
-| 김상우 ([s4ngg](https://github.com/s4ngg)) | 팀장 | CICD 파이프라인 구축, 대시보드 기능 구현(예시) |
+| 김상우 ([s4ngg](https://github.com/s4ngg)) | 팀장 | CICD 파이프라인 구축, 대시보드 및 부서 관리 기능 구현 |
 | 고유리 ([채울예정](https://github.com/채워주세요)) | 팀원 | 채울 예정 |
 | 이현재 ([TIG-korea](https://github.com/TIG-korea)) | 팀원 | EC2(MySQL) 서버 구축, 휴가 관리 및 로그인 기능 구현 |
 | 이영훈 ([Hello-pythworld](https://github.com/Hello-pythworld)) | 팀원 | S3 + CloudFront 구축, 직원 관리 및 근태 관리 기능 구현 |
