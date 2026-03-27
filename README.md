@@ -9,6 +9,7 @@
 ![Lombok](https://img.shields.io/badge/Lombok-Annotation-red)
 ![Validation](https://img.shields.io/badge/Validation-Jakarta%20Validation-blue)
 ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger&logoColor=black)
+![JavaMailSender](https://img.shields.io/badge/JavaMailSender-SMTP-007396)
 ![spring-dotenv](https://img.shields.io/badge/spring--dotenv-env%20config-3EAAAF)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql)
 ![AWS](https://img.shields.io/badge/AWS-EC2%20%7C%20S3%20%7C%20CloudFront-232F3E?logo=amazonaws)
@@ -63,6 +64,7 @@
 - Lombok
 - Validation
 - Swagger
+- JavaMailSender
 - dotenv
 
 ### Infra
