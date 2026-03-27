@@ -47,6 +47,10 @@ public class AttendancesServiceImpl implements AttendanceService {
         Member member = memberRepository.findById(requestDTO.getMemberId())
                 .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
 
+        if (attendanceRepository.existsByMember_MemberIdAndWorkDate(
+        		requestDTO.getMemberId(), LocalDate.now())) {
+            throw new RuntimeException("이미 오늘 출근 체크인을 하셨습니다.");
+        }
         Attendance attendance = Attendance.checkIn(
                 member,
                 LocalDate.now(),
