@@ -39,6 +39,7 @@ public class LoginServiceImpl implements LoginService{
         
         
         JwtUserInfoDTO jwtUserDTO = JwtUserInfoDTO.builder()
+        		.memberId(member.getMemberId())
                 .loginId(member.getEmployeeNo())
                 .name(member.getName())
                 .role(member.getRole()) 
