@@ -57,11 +57,8 @@ public class DashboardServiceImpl implements DashboardService {
                 .countByMember_MemberIdAndWorkDateBetween(memberId, firstDay, lastDay);
 
      // 5. 대기 중인 휴가 승인 건수
-        int pendingCount = (int) vacationRepository
-                .findByStatusWithMember(VacationStatus.PENDING)
-                .stream()
-                .filter(v -> v.getMember().getMemberId().equals(memberId))
-                .count();
+        int pendingCount = vacationRepository
+        		.countByStatusAndMember_MemberId(VacationStatus.PENDING, memberId);
 
         // 6. 최근 근태 이력
         List<Attendance> recentList = attendanceRepository
