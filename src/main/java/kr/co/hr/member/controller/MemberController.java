@@ -1,7 +1,6 @@
 package kr.co.hr.member.controller;
 
-import java.util.List;
-
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,13 +35,16 @@ public class MemberController {
 
     @Operation(summary = "전체 직원 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MemberResponseDTO>>> getAllMembers() {
-        return ResponseEntity.ok(ApiResponse.success("직원 목록 조회 성공", memberService.getAllMembers()));
+    public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> getAllMembers(
+    		@PageableDefault(size = 5, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success("직원 목록 조회 성공", memberService.getAllMembers(pageable)));
     }
 
     @Operation(summary = "단일 직원 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(
+        @Parameter(description = "직원 ID", required = true)
+        @PathVariable("memberId") Long memberId) {
         return ResponseEntity.ok(ApiResponse.success("직원 조회 성공", memberService.getMember(memberId)));
     }
 
