@@ -11,7 +11,7 @@ import kr.co.hr.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @Tag(name = "Dashboard", description = "대시보드 API")
-//@RestController
+@RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {

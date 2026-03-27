@@ -15,6 +15,7 @@ import kr.co.hr.dashboard.service.DashboardService;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import kr.co.hr.vacation.entity.VacationQuota;
+import kr.co.hr.vacation.enums.VacationStatus;
 import kr.co.hr.vacation.repository.VacationQuotaRepository;
 import kr.co.hr.vacation.repository.VacationRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,9 +56,9 @@ public class DashboardServiceImpl implements DashboardService {
         int monthlyWorkDays = attendanceRepository
                 .countByMember_MemberIdAndWorkDateBetween(memberId, firstDay, lastDay);
 
-        // 5. 대기 중인 휴가 승인 건수
+     // 5. 대기 중인 휴가 승인 건수
         int pendingCount = vacationRepository
-                .countByMember_MemberIdAndStatus(memberId, "PENDING");
+        		.countByStatusAndMember_MemberId(VacationStatus.PENDING, memberId);
 
         // 6. 최근 근태 이력
         List<Attendance> recentList = attendanceRepository
