@@ -9,10 +9,12 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor // 생성자 주입을 위해 추가
+@Getter
 public class JwtProvider {
 		
 	private final JwtProperties jwtProperties;
@@ -27,7 +29,8 @@ public class JwtProvider {
         long expireTime = jwtProperties.getExpirationTime();
 
         return Jwts.builder()
-                .setSubject(jwtUserDTO.getLoginId())
+                .setSubject(String.valueOf(jwtUserDTO.getMemberId()))
+                .claim("loginId", jwtUserDTO.getLoginId())
                 .claim("name", jwtUserDTO.getName())
                 .claim("role", jwtUserDTO.getRole()) // 권한 정보 추가
                 .setIssuedAt(now)
@@ -35,5 +38,20 @@ public class JwtProvider {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+	
+	// 토큰에서 PK(Long)으추출
+	public Long getLoginIdFromToken(String token) {
+		String subject = Jwts.parserBuilder()
+	            .setSigningKey(getSigningKey())
+	            .build()
+	            .parseClaimsJws(token)
+	            .getBody()
+	            .getSubject();
+		return Long.valueOf(subject);
+		
+		
+	}
+	
+	
 
 }
