@@ -52,7 +52,7 @@ public class VacationController {
     @Operation(summary = "내 휴가 내역 조회", description = "특정 직원의 휴가 신청 내역을 조회합니다.")
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getMyVacationHistory(
-            @PathVariable("Authorization") String token) {
+    		@RequestHeader("Authorization") String token) {
     	
     	// 1. Bearer 제거 및 PK 추출
     	String jwt = token.substring(7);
