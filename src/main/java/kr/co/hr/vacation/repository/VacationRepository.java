@@ -16,4 +16,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     // 2. 승인대기 중인 휴가 목록 조회 (관리자용)
     @Query("select v from Vacation v join fetch v.member where v.status = :status")
     List<Vacation> findByStatusWithMember(@Param("status") VacationStatus status);
+    
+    int countByStatusAndMember_MemberId(VacationStatus status, Long memberId);
 } 
