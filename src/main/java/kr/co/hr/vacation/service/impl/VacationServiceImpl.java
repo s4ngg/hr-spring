@@ -97,8 +97,7 @@ public class VacationServiceImpl implements VacationService{
     @Transactional(readOnly = true)
     public List<VacationResponseDTO> getPendingVacations() {
     	// 상태가 '펜딩' 상태인것들만 가져오기
-    	List<Vacation> pendingList = vacationRepository.findByStatusWithMember("PENDING");
-    	
+    	List<Vacation> pendingList = vacationRepository.findByStatusWithMember(VacationStatus.PENDING);    	
     	return pendingList.stream().map(v -> {
             // 날짜 차이 계산
             long dayDiff = java.time.temporal.ChronoUnit.DAYS.between(v.getStartDate(), v.getEndDate()) + 1;
