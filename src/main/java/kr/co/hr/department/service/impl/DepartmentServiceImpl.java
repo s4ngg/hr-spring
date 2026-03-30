@@ -61,6 +61,9 @@ public class DepartmentServiceImpl implements DepartmentService {
                 null
         );
         departmentRepository.save(newDept);
+        if (manager != null) {
+            manager.updateDepartment(newDept);
+        }
     }
 
     @Transactional
@@ -76,6 +79,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         department.update(dto.getDeptCode(), dto.getDeptName(), manager);
+        if (manager != null) {
+            manager.updateDepartment(department);
+        }
     }
 
     @Transactional
