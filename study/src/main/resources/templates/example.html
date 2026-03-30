@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	Hello, World!
+	<p th:text="'Welcome, ' + ${name}"></p>
+	<p th:utext="${message}"></p>
+	<!-- <iframe src="https://www.google.com"></iframe>
+	<iframe src ="https://nirsa.tistory.com/"></iframe> -->
+	
+	<p th:if="${name == '홍길동'}">홍길동 맞음!<!p>
+	<p th:unless="${name == '홍길동'}">홍길동 아님!</p>
+	<ul>
+		<li th:each="item : ${items}" th:text="${item}"></li>
+		<!--
+			items = ["item1", "item2", "item3"]
+			1. item = "item1"
+			2. <li th:text="${item}"></li>
+			3. <li>item1</li>
+			-->
+	</ul>
+</body>
+</html>

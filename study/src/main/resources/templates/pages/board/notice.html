@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 - Spring 학습 플랫폼</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header th:replace="~{fragments/header :: global_header}"></header>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>공지사항</h1>
+            <!-- 글쓰기 버튼 추가 -->
+            <a href="/board/notice/create/form" class="btn btn-primary" style="text-decoration: none;" th:if="${session.LOGIN_USER != null}">글쓰기</a>
+        </div>
+        <div class="post-list" id="announcementList">
+        
+            <div class="post-item" th:each="notice : ${list}"
+            	 th:onclick="|location.href='/board/notice/detail?id=' + ${notice.id}|">
+                <div class="post-header">
+                    <div>
+                        <div class="post-title" th:text="${notice.title}"></div>
+                        <div class="post-content" th:text="${notice.content}"></div>
+                    </div>
+                   <span class="badge" th:text="${notice.category}"></span>
+                </div>
+                <div class="post-footer">
+                    <span th:text="${notice.writerName}"></span>
+                    <span th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}"></span>
+                </div>
+            </div>
+            
+
+        <!-- 페이징 버튼 추가 -->
+        <div class="pagination">
+        <!-- 이전 페이지(<) -->
+            <button class="page-btn"
+            		th:onclick="${currentPage <= 1} ? null : 'location.href=\'/board/notice?page=' + (${currentPage - 1}) + '\''"><</button>
+            
+            <button class="page-btn active" 
+            		th:each="i : ${#numbers.sequence(startPage, endPage)}"
+            		th:text="${i}"
+            		th:onclick="|location.href='/board/notice?page =' + ${i}|"></button>
+            
+            <!-- 다음 페이지(>)  -->
+            <button class="page-btn"
+            		th:onclick="${currentPage >= totalPages} ? null : 'location.href=\'/board/notice?page=' + (${currentPage + 1}) + '\''">></button>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

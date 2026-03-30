@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자유게시판 - Spring 학습 플랫폼</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header th:replace="~{fragments/header :: global_header}"></header>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>자유게시판</h1>
+            <!-- 글쓰기 페이지로 이동 -->
+            <a href="free-write.html" class="btn btn-primary" style="text-decoration: none;">글쓰기</a>
+        </div>
+        <div class="post-list" id="boardList">
+            <div class="post-item" onclick="goBoardDetail(1)">
+                <div class="post-header">
+                    <div>
+                        <div class="post-title">Spring Boot 질문입니다</div>
+                        <div class="post-content">@RequestMapping 어노테이션 사용법에 대해 질문이 있습니다.</div>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <span>user123</span>
+                    <span>2025.11.29 | 댓글 5</span>
+                </div>
+            </div>
+            <div class="post-item" onclick="goBoardDetail(2)">
+                <div class="post-header">
+                    <div>
+                        <div class="post-title">Dependency Injection 관련 정보</div>
+                        <div class="post-content">Spring의 DI 패턴에 대해 공유합니다.</div>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <span>developer456</span>
+                    <span>2025.11.28 | 댓글 12</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 페이징 버튼 추가 -->
+        <div class="pagination">
+            <button class="page-btn" onclick="goToBoardFirstPage()"><<</button>
+            <button class="page-btn" onclick="goToBoardPrevPage()"><</button>
+            <button class="page-btn active" onclick="goToBoardPage(1)">1</button>
+            <button class="page-btn" onclick="goToBoardPage(2)">2</button>
+            <button class="page-btn" onclick="goToBoardPage(3)">3</button>
+            <button class="page-btn" onclick="goToBoardNextPage()">></button>
+            <button class="page-btn" onclick="goToBoardLastPage()">>></button>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

@@ -39,3 +39,10 @@ out/
 
 ### 어플리케이션 프로퍼티스 관리 ###
 .env
+
+# 업로드 이미지
+**/static/uploads/
+
+# 민감한 설정파일
+application.properties
+application*.yml

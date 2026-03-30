@@ -1,0 +1,18 @@
+<header th:fragment ="global_header">
+        <nav>
+            <div class="logo">Spring Hub</div>
+            <ul class="nav-center">
+                <li><a href="/" class="nav-link active">홈</a></li>
+                <li><a href="/board/notice" class="nav-link">공지사항</a></li>
+                <li><a href="board.html" class="nav-link">자유게시판</a></li>
+                <li th:if="${session.LOGIN_USER != null}"><a href="profile.html" class="nav-link">회원정보</a></li>
+            </ul>
+            <div class="nav-right" th:if="${session.LOGIN_USER == null}">
+                <a href="/member/login/form" class="btn btn-secondary">로그인</a>
+                <a href="/member/register/form" class="btn btn-primary" style="text-decoration: none; display: inline-block;">회원가입</a>
+            </div>
+            <div class="nav-right" th:if="${session.LOGIN_USER != null}">
+                <a href="/member/logout" class="btn btn-secondary">로그아웃</a>
+            </div>
+        </nav>
+    </header>
