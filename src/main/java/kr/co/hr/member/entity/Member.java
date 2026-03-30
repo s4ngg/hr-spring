@@ -69,5 +69,9 @@ public class Member {
 	public void updateDepartment(Department department) {
 	    this.department = department;
 	}
+	
+	public void updatePassword(String encodedPassword) {
+	    this.password = encodedPassword;
+	}
 }
 
