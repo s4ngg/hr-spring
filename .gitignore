@@ -44,5 +44,4 @@ out/
 **/static/uploads/
 
 # 민감한 설정파일
-application.properties
 application*.yml
