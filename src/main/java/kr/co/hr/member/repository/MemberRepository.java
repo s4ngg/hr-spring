@@ -14,4 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByMemberIdNotIn(List<Long> memberIds);
     // 부서 인원 수 조회
     Long countByDepartment_DepartmentId(Long departmentId);
+    
+    Optional<Member> findByEmail(String email);
 }
