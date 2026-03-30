@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring 학습 플랫폼 - 홈</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header th:replace="~{fragments/header :: global_header}"></header>
+    <div class="container">
+        <h1 style="margin-bottom: 1rem;">Spring 학습 플랫폼에 오신 것을 환영합니다</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+            이 플랫폼에서 Spring 백엔드 개발의 기본 개념을 실습할 수 있습니다.
+        </p>
+        <div class="card-grid">
+            <a href="announcements.html" class="card" style="text-decoration: none; color: inherit;">
+                <h3>📢 공지사항</h3>
+                <p style="color: var(--text-secondary);">최신 소식과 업데이트를 확인하세요</p>
+            </a>
+            <a href="board.html" class="card" style="text-decoration: none; color: inherit;">
+                <h3>💬 자유게시판</h3>
+                <p style="color: var(--text-secondary);">다른 학습자들과 소통하세요</p>
+            </a>
+            <a href="profile.html" class="card" style="text-decoration: none; color: inherit;">
+                <h3>👤 회원정보</h3>
+                <p style="color: var(--text-secondary);">프로필 정보를 관리하세요</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

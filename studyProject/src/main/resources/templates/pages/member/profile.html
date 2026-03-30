@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습게시판 - 내 정보</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="home.html" class="logo">
+        <span class="logo-icon">L</span>
+        학습게시판
+      </a>
+
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav">
+        <a href="home.html">홈</a>
+        <a href="board.html">게시판</a>
+        <a href="profile.html" class="active">내 정보</a>
+        <div class="nav-auth">
+          <a href="login.html" class="btn btn-ghost btn-sm">로그아웃</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+
+    <div class="profile-layout">
+
+      <!-- Sidebar -->
+      <aside class="profile-sidebar">
+        <div class="profile-avatar">김</div>
+        <div class="profile-name">김개발</div>
+        <div class="profile-email">dev.kim@email.com</div>
+
+        <nav class="profile-nav">
+          <a href="#section-info" class="active">기본 정보</a>
+          <a href="#section-password">비밀번호 변경</a>
+          <a href="#section-activity">활동 내역</a>
+          <a href="#section-withdraw">회원 탈퇴</a>
+        </nav>
+      </aside>
+
+      <!-- Content -->
+      <div class="profile-content">
+
+        <!-- Section 1: 기본 정보 수정 -->
+        <div class="card" id="section-info">
+          <div class="card-header">
+            <h2>기본 정보 수정</h2>
+            <p>프로필 정보를 확인하고 수정할 수 있습니다.</p>
+          </div>
+
+          <form onsubmit="handleFormSubmit(event, '정보가 수정되었습니다! (학습용 알림)')">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">이름</label>
+                <input type="text" id="name" class="form-input" value="김��발" required>
+                <span class="error-msg">이름을 입력해 주세요.</span>
+              </div>
+              <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" class="form-input" value="김개발" required>
+                <span class="error-msg">닉네임을 입력해 주세요.</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">이메일</label>
+              <input type="email" id="email" class="form-input" value="dev.kim@email.com" required>
+              <span class="error-msg">이메일을 입력해 주세요.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">전화번호</label>
+              <input type="tel" id="phone" class="form-input" value="010-1234-5678">
+            </div>
+
+            <div class="form-group">
+              <label for="bio">자기소개</label>
+              <textarea id="bio" class="form-textarea" rows="3" style="min-height: 80px;"
+                placeholder="간단한 자기소개를 입력하세요">프론트엔드 개발을 학습하고 있는 김개발입니다.</textarea>
+            </div>
+
+            <div class="btn-group" style="justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary">정보 수정</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Section 2: 비밀번호 변경 -->
+        <div class="card" id="section-password">
+          <div class="card-header">
+            <h2>비밀번호 변경</h2>
+            <p>보안을 위해 주기적으로 비밀번호를 변경해 주세요.</p>
+          </div>
+
+          <form onsubmit="handleFormSubmit(event, '비밀번호가 변경되었습니다! (학습용 알림)')">
+
+            <div class="form-group">
+              <label for="currentPassword">현재 비밀번호</label>
+              <input type="password" id="currentPassword" class="form-input" placeholder="현재 비밀번호를 입력하세요" required>
+              <span class="error-msg">현재 비밀번호를 입력해 주세요.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="password">새 비밀번호</label>
+              <input type="password" id="password" class="form-input" placeholder="새 비밀번호를 입력하세요 (8자 이상)" required minlength="8">
+              <span class="error-msg">새 비밀번호를 입력해 주세요 (8자 이상).</span>
+            </div>
+
+            <div class="form-group">
+              <label for="passwordConfirm">새 비밀번호 확인</label>
+              <input type="password" id="passwordConfirm" class="form-input" placeholder="새 비밀번호를 다시 입력하세요" required oninput="checkPasswordMatch()">
+              <span class="error-msg">비밀번호가 일치하지 않습니다.</span>
+            </div>
+
+            <div class="btn-group" style="justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary">비밀번호 변경</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Section 3: 활동 내역 -->
+        <div class="card" id="section-activity">
+          <div class="card-header">
+            <h2>활동 내역</h2>
+            <p>내가 작성한 게시글과 댓글 내역입니다.</p>
+          </div>
+
+          <h4 class="mb-2">작성한 게시글</h4>
+          <div class="table-wrapper mb-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="col-title">제목</th>
+                  <th class="col-date">작성일</th>
+                  <th class="col-views">조회수</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-title"><a href="board-view.html">CSS Flexbox와 Grid의 차이점 정리</a></td>
+                  <td class="col-date">2026-02-10</td>
+                  <td class="col-views">42</td>
+                </tr>
+                <tr>
+                  <td class="col-title"><a href="board-view.html">CSS 애니메이션과 트랜지션 비교</a></td>
+                  <td class="col-date">2026-02-05</td>
+                  <td class="col-views">87</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 class="mb-2">작성한 댓글</h4>
+          <div class="comment-list">
+            <div class="comment-item">
+              <span class="comment-author">CSS Flexbox와 Grid의 차이점 정리</span>
+              <span class="comment-date">2026-02-10 16:45</span>
+              <p class="comment-text">네, 다음 글에서 실전 예제를 준비해 볼게요. 감사합니다!</p>
+            </div>
+            <div class="comment-item">
+              <span class="comment-author">DOM 조작 기본 메서드 정리</span>
+              <span class="comment-date">2026-02-02 09:12</span>
+              <p class="comment-text">querySelector 활용법 정리 감사합니다. 잘 배워갑니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: 회원 탈퇴 -->
+        <div class="card" id="section-withdraw">
+          <div class="card-header">
+            <h2>회원 탈퇴</h2>
+            <p>탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.</p>
+          </div>
+
+          <div class="alert alert-danger">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            회원 탈퇴를 진행하면 작성한 게시글과 댓글을 포함한 모든 데이터가 영구적으로 삭제됩니다.
+          </div>
+
+          <div class="form-group">
+            <label class="form-check">
+              <input type="checkbox" id="withdrawAgree">
+              위 내용을 확인하였으며, 회원 탈퇴에 동의합니다.
+            </label>
+          </div>
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-danger" onclick="alert('회원 탈퇴가 처리되었습니다. (학습용 알림)')">회원 탈퇴</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>학습용 웹페이지 &copy; 2026 &mdash; HTML, CSS, JavaScript 실습 프로젝트</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습게시판 - 회원가입</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="home.html" class="logo">
+        <span class="logo-icon">L</span>
+        학습게시판
+      </a>
+
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav">
+        <a href="home.html">홈</a>
+        <a href="board.html">게시판</a>
+        <a href="profile.html">내 정보</a>
+        <div class="nav-auth">
+          <a href="login.html" class="btn btn-ghost btn-sm">로그인</a>
+          <a href="/member/signup/form" class="btn btn-primary btn-sm active">회원가입</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="main main--narrow">
+
+    <div class="card">
+      <div class="card-header text-center">
+        <h2>회원가입</h2>
+        <p>새로운 계정을 생성하고 서비스를 시작하세요.</p>
+      </div>
+
+      <!-- 회원가입 폼 -->
+      <form action="/member/signup" method="post" onsubmit="return handleSubmit()">
+
+
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-input"
+            placeholder="홍길동"
+            required
+          >
+          <span class="error-msg">이름을 입력해 주세요.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            placeholder="example@email.com"
+            required
+          >
+          <span class="error-msg">이메일을 입력해 주세요.</span>
+          <span class="hint">실제 이메일이 아니어도 됩니다 (학습용).</span>
+        </div>
+
+        <div class="form-group">
+          <label for="nickname">닉네임</label>
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            class="form-input"
+            placeholder="사용할 닉네임을 입력하세요"
+            required
+          >
+          <span class="error-msg">닉네임을 입력해 주세요.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="8자 이상 입력하세요"
+            required
+            minlength="8"
+          >
+          <span class="error-msg">비밀번호를 입력해 주세요 (8자 이상).</span>
+        </div>
+
+        <div class="form-group">
+          <label for="passwordConfirm">비밀번호 확인</label>
+          <input
+            type="password"
+            id="passwordConfirm"
+            name="passwordCheck"
+            class="form-input"
+            placeholder="비밀번호를 다시 입력하세요"
+            required
+            oninput="checkPasswordMatch()"
+          >
+          <span class="error-msg">비밀번호가 일치하지 않습니다.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">전화번호 (선택)</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phonenumber"
+            class="form-input"
+            placeholder="010-1234-5678"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" required>
+            <span>이용약관 및 개인정보처리방침에 동의합니다. <span class="text-danger">*</span></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">회원가입</button>
+
+      </form>
+
+      <div class="card-footer">
+        이미 계정이 있으신가요? <a href="login.html">로그인</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>학습용 웹페이지 &copy; 2026 &mdash; HTML, CSS, JavaScript 실습 프로젝트</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
