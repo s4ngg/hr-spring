@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+</head>
+<body>
+
+<h1 th:text="${name}"></h1>
+<p th:utext="${message}"></p>
+
+<ul>
+    <li th:each="item : ${items}"
+        th:text="${item}">
+    </li>
+</ul>
+
+</body>
+</html>

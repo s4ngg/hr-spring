@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원정보 - Spring 학습 플랫폼</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header th:replace="~{fragments/header :: global_header}"></header>
+
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">회원정보</h1>
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="profile-avatar">👤</div>
+                <div style="text-align: center;">
+                    <h3 style="margin-bottom: 0.5rem;">홍길동</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">user@example.com</p>
+                </div>
+            </div>
+            <div class="profile-main">
+                <div class="profile-section">
+                    <h3>기본 정보</h3>
+                    <form onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label>이름</label>
+                            <input type="text" value="홍길동" required>
+                        </div>
+                        <div class="form-group">
+                            <label>아이디</label>
+                            <input type="text" value="user123" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>이메일</label>
+                            <input type="email" value="user@example.com" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </form>
+                </div>
+
+                <div class="profile-section">
+                    <h3>비밀번호 변경</h3>
+                    <form onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label>현재 비밀번호</label>
+                            <input type="password" placeholder="현재 비밀번호를 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>새 비밀번호</label>
+                            <input type="password" placeholder="새 비밀번호를 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>비밀번호 확인</label>
+                            <input type="password" placeholder="비밀번호를 다시 입력하세요" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">비밀번호 변경</button>
+                    </form>
+                </div>
+
+                <div class="profile-section">
+                    <a href="login.html" class="btn btn-secondary" style="text-decoration: none; display: inline-block; margin-top: 2rem;">로그아웃</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
