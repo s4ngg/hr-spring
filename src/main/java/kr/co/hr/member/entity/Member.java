@@ -65,5 +65,9 @@ public class Member {
 	public void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
+	
+	public void updateDepartment(Department department) {
+	    this.department = department;
+	}
 }
 
