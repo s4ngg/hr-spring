@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Tag(name = "근태 관리", description = "근태 관련 API")
 @RestController
-@RequestMapping("/attendances")
+@RequestMapping("/api/attendances")
 @RequiredArgsConstructor
 public class AttendanceController {
 
@@ -52,7 +52,7 @@ public class AttendanceController {
 
     // 퇴근 체크아웃
     @Operation(summary = "퇴근 체크아웃", description = "특정 근태 기록에 퇴근 시간을 등록합니다.")
-    @PutMapping("/check-out/{attendanceId}")
+    @PatchMapping("/check-out/{attendanceId}")
     public ResponseEntity<AttendanceResponseDTO> checkOut(
             @PathVariable("attendanceId")Long attendanceId,
             @RequestBody AttendanceRequestDTO requestDTO) {
