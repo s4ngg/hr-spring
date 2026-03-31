@@ -11,10 +11,8 @@ import kr.co.hr.findpassword.dto.SendCodeRequestDto;
 import kr.co.hr.findpassword.dto.VerifyCodeRequestDto;
 import kr.co.hr.findpassword.repository.VerificationRedisRepository;
 import kr.co.hr.findpassword.service.FindPasswordService;
-import kr.co.hr.global.exception.InvalidVerificationCodeException;
-import kr.co.hr.global.exception.MemberNotFoundException;
-import kr.co.hr.global.exception.VerificationExpiredException;
-import kr.co.hr.global.exception.VerificationNotCompletedException;
+import kr.co.hr.global.exception.BusinessException;
+import kr.co.hr.global.exception.ErrorCode;
 import kr.co.hr.itcontact.MailService;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
@@ -32,7 +30,7 @@ public class FindPasswordServiceImpl implements FindPasswordService {
     @Override
     public void sendVerificationCode(SendCodeRequestDto dto) {
         memberRepository.findByEmail(dto.getEmail())
-        .orElseThrow(() -> new MemberNotFoundException());
+        .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         String code = generateCode();
         String encodedCode = passwordEncoder.encode(code);
@@ -44,10 +42,10 @@ public class FindPasswordServiceImpl implements FindPasswordService {
     @Override
     public void verifyCode(VerifyCodeRequestDto dto) {
         String encodedCode = verificationRedisRepository.getCode(dto.getEmail())
-        		.orElseThrow(() -> new VerificationExpiredException());
+        		.orElseThrow(() -> new BusinessException(ErrorCode.VERIFICATION_EXPIRED));
 
         if (!passwordEncoder.matches(dto.getCode(), encodedCode)) {
-        	throw new InvalidVerificationCodeException();
+        	throw new BusinessException(ErrorCode.INVALID_VERIFICATION_CODE);
         }
 
         // 인증 성공 후 코드 즉시 삭제 → 재사용 방지
@@ -59,11 +57,11 @@ public class FindPasswordServiceImpl implements FindPasswordService {
     @Override
     public void resetPassword(ResetPasswordRequestDto dto) {
         if (!verificationRedisRepository.isVerified(dto.getEmail())) {
-        	throw new VerificationNotCompletedException();
+        	 throw new BusinessException(ErrorCode.VERIFICATION_NOT_COMPLETED);
         }
 
         Member member = memberRepository.findByEmail(dto.getEmail())
-        		.orElseThrow(() -> new MemberNotFoundException());
+        		.orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         member.updatePassword(passwordEncoder.encode(dto.getNewPassword()));
         verificationRedisRepository.deleteVerified(dto.getEmail());

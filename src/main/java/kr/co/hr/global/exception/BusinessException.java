@@ -1,16 +1,14 @@
 package kr.co.hr.global.exception;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
 
 @Getter
 public class BusinessException extends RuntimeException {
 
-    private final HttpStatus status;
+    private final ErrorCode errorCode;
 
-    public BusinessException(String message, HttpStatus status) {
-        super(message);
-        this.status = status;
+    public BusinessException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }
