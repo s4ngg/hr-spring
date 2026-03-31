@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.hr.dashboard.dto.DashboardResponseDto;
 import kr.co.hr.dashboard.service.DashboardService;
@@ -18,7 +19,10 @@ public class DashboardController {
 
     private final DashboardService dashboardService;
 
-    @Operation(summary = "대시보드 조회", description = "직원의 대시보드 정보를 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "해당 직원이 없습니다.")
+    })
     @GetMapping("/{memberId}")
     public ResponseEntity<ApiResponse<DashboardResponseDto>> getDashboard(
             @PathVariable("memberId") Long memberId) {

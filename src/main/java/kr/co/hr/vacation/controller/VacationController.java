@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.hr.global.config.JwtProvider;
@@ -31,6 +32,11 @@ public class VacationController {
 
     // 1. 휴가 신청
     @Operation(summary = "휴가 신청", description = "새로운 휴가를 신청합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "휴가 신청 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "해당 직원이 없습니다.")
+    })
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> requestVacation(
     		@RequestHeader("Authorization") String token, // 토큰 수신
@@ -49,6 +55,10 @@ public class VacationController {
 
     // 2. 내 휴가 내역 조회
     @Operation(summary = "내 휴가 내역 조회", description = "특정 직원의 휴가 신청 내역을 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "해당 직원이 없습니다.")
+    })
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getMyVacationHistory(
     		@RequestHeader("Authorization") String token) {
