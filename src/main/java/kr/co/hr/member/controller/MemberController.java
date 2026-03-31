@@ -19,7 +19,7 @@ import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "직원 관리", description = "직원 관련 API")
+@Tag(name = "Member", description = "직원 관련 API")
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor

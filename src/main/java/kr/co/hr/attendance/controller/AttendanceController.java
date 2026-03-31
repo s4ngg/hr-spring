@@ -19,7 +19,7 @@ import kr.co.hr.attendance.dto.AttendanceResponseDTO;
 import kr.co.hr.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "근태 관리", description = "근태 관련 API")
+@Tag(name = "Attendance", description = "근태 관련 API")
 @RestController
 @RequestMapping("/attendances")
 @RequiredArgsConstructor
