@@ -34,7 +34,7 @@ public class MemberController {
     @Tag(name = "전체 직원 조회 + 이름 검색(페이징)")
     @Operation(summary = "전체 직원 조회 + 이름 검색 (페이징)")
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> getMembers(
+    public ResponseEntity<ResponseEntity<ApiResponse<Page<MemberResponseDTO>>>> getMembers(
             @RequestParam(value = "name", required = false) String name,
             @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success("직원 목록 조회 성공", memberService.getMembers(name, pageable)));
@@ -43,7 +43,7 @@ public class MemberController {
     @Tag(name = "단일 직원 조회")
     @Operation(summary = "단일 직원 조회")
     @GetMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(
+    public ResponseEntity<ResponseEntity<ApiResponse<MemberResponseDTO>>> getMember(
             @Parameter(description = "직원 ID", required = true)
             @PathVariable("memberId") Long memberId) {
         return ResponseEntity.ok(ApiResponse.success("직원 조회 성공", memberService.getMember(memberId)));
@@ -51,7 +51,7 @@ public class MemberController {
     @Tag(name = "직원 등록")
     @Operation(summary = "직원 등록")
     @PostMapping
-    public ResponseEntity<ApiResponse<MemberResponseDTO>> createMember(
+    public ResponseEntity<ResponseEntity<ApiResponse<MemberResponseDTO>>> createMember(
             @Valid @RequestBody MemberRequestDTO requestDTO) {
         return ResponseEntity.ok(ApiResponse.success("직원 등록 성공", memberService.createMember(requestDTO)));
     }
@@ -59,7 +59,7 @@ public class MemberController {
     @Tag(name = "직원 정보 수정")
     @Operation(summary = "직원 정보 수정")
     @PatchMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<MemberResponseDTO>> updateMember(
+    public ResponseEntity<ResponseEntity<ApiResponse<MemberResponseDTO>>> updateMember(
             @PathVariable("memberId") Long memberId,
             @Valid @RequestBody MemberRequestDTO requestDTO) {
         return ResponseEntity.ok(ApiResponse.success("직원 수정 성공", memberService.updateMember(memberId, requestDTO)));
@@ -67,7 +67,7 @@ public class MemberController {
     @Tag(name = "직원 삭제")
     @Operation(summary = "직원 삭제")
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<ApiResponse<Void>> deleteMember(
+    public ResponseEntity<ResponseEntity<ApiResponse<Object>>> deleteMember(
             @PathVariable("memberId") Long memberId) {
         memberService.deleteMember(memberId);
         return ResponseEntity.ok(ApiResponse.success("직원 삭제 성공"));
