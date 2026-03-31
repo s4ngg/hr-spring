@@ -15,36 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.hr.attendance.controller.docs.AttendanceControllerDocs;
 import kr.co.hr.attendance.dto.AttendanceRequestDTO;
 import kr.co.hr.attendance.dto.AttendanceResponseDTO;
 import kr.co.hr.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Attendance", description = "근태 관련 API")
 @RestController
 @RequestMapping("/attendances")
 @RequiredArgsConstructor
-public class AttendanceController {
+public class AttendanceController implements AttendanceControllerDocs {
 
     private final AttendanceService attendanceService;
 
     // 전체 근태 조회
-    @Operation(summary = "전체 근태 조회", description = "모든 직원의 근태 목록을 조회합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "조회 성공")
-    })
+    @Override
     @GetMapping
     public ResponseEntity<List<AttendanceResponseDTO>> getAllAttendances() {
         return ResponseEntity.ok(attendanceService.getAllAttendances());
     }
 
     // 특정 직원 근태 조회
-    @Operation(summary = "특정 직원 근태 조회", description = "직원 ID로 해당 직원의 근태 목록을 조회합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "조회 성공"),
-        @ApiResponse(responseCode = "404", description = "해당 직원이 없습니다.")
-    })
+    @Override
     @GetMapping("/{memberId}")
     public ResponseEntity<List<AttendanceResponseDTO>> getAttendancesByMember(
             @PathVariable("memberId") Long memberId) {
@@ -52,12 +44,7 @@ public class AttendanceController {
     }
 
     // 출근 체크인
-    @Operation(summary = "출근 체크인", description = "직원의 출근을 등록합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "체크인 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-        @ApiResponse(responseCode = "404", description = "해당 직원이 없습니다.")
-    })
+    @Override
     @PostMapping("/check-in")
     public ResponseEntity<AttendanceResponseDTO> checkIn(
             @RequestBody AttendanceRequestDTO requestDTO) {
@@ -65,12 +52,7 @@ public class AttendanceController {
     }
 
     // 퇴근 체크아웃
-    @Operation(summary = "퇴근 체크아웃", description = "특정 근태 기록에 퇴근 시간을 등록합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "체크아웃 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-        @ApiResponse(responseCode = "404", description = "해당 근태 기록이 없습니다.")
-    })
+    @Override
     @PutMapping("/check-out/{attendanceId}")
     public ResponseEntity<AttendanceResponseDTO> checkOut(
             @PathVariable("attendanceId")Long attendanceId,
@@ -79,11 +61,7 @@ public class AttendanceController {
     }
 
     // 근태 삭제
-    @Operation(summary = "근태 삭제", description = "특정 근태 기록을 삭제합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "삭제 성공"),
-        @ApiResponse(responseCode = "404", description = "해당 근태 기록이 없습니다.")
-    })
+    @Override
     @DeleteMapping("/{attendanceId}")
     public ResponseEntity<Void> deleteAttendance(
             @PathVariable("attendanceId") Long attendanceId) {

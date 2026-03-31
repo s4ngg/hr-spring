@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.hr.global.response.ApiResponse;
+import kr.co.hr.vacation.controller.docs.VacationAdminControllerDocs;
 import kr.co.hr.vacation.dto.VacationAdminRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.service.VacationService;
@@ -22,17 +22,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/admin/vacations")
 @RequiredArgsConstructor
-@Tag(name = "Vacation Admin", description = "관리자 전용 휴가 승인/반려 API")
-public class VacationAdminController {
+public class VacationAdminController implements VacationAdminControllerDocs {
 	
 	private final VacationService vacationService;
 	
 	  
 	// 승인 대기 목록 조회
-	@Operation(summary = "승인 대기 목록 조회", description = "관리자가 승인해야 할 휴가 목록을 조회합니다.")
-	@ApiResponses({
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공")
-	})
+	@Override
 	@GetMapping("/pending")
     public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getPendingVacations() {
         List<VacationResponseDTO> list = vacationService.getPendingVacations();
@@ -42,12 +38,7 @@ public class VacationAdminController {
 	
 	
 	// 휴가 상태 변경 
-	@Operation(summary = "휴가 상태 변경", description = "관리자가 특정 휴가 신청을 승인하거나 반려합니다.")
-	@ApiResponses({
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상태 변경 성공"),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-	    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "해당 휴가 신청이 없습니다.")
-	})
+	@Override
 	@PatchMapping("/{vacationId}/status")
     public ResponseEntity<ApiResponse<Void>> updateVacationStatus(
             @PathVariable("vacationId") Long vacationId,
