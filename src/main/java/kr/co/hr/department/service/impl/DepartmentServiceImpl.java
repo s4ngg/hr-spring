@@ -10,6 +10,9 @@ import kr.co.hr.department.dto.DepartmentResponseDto;
 import kr.co.hr.department.entity.Department;
 import kr.co.hr.department.repository.DepartmentRepository;
 import kr.co.hr.department.service.DepartmentService;
+import kr.co.hr.global.exception.DepartmentNotFoundException;
+import kr.co.hr.global.exception.MemberNotFoundException;
+import kr.co.hr.global.exception.SearchResultNotFoundException;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> result = departmentRepository.findByDeptNameContaining(deptName);
 
         if (result.isEmpty()) {
-            throw new RuntimeException("검색 결과가 없습니다.");
+        	throw new SearchResultNotFoundException();
         }
 
         return DepartmentResponseDto.fromList(
@@ -51,7 +54,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Member manager = null;
         if (dto.getManagerId() != null) {
             manager = memberRepository.findById(dto.getManagerId())
-                    .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+            		.orElseThrow(() -> new MemberNotFoundException());
         }
         Department newDept = new Department(
                 null,
@@ -70,12 +73,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void updateDepartment(Long departmentId, DepartmentRequestDto dto) {
         Department department = departmentRepository.findById(departmentId)
-            .orElseThrow(() -> new RuntimeException("해당 부서가 없습니다."));
+        		.orElseThrow(() -> new DepartmentNotFoundException());
 
         Member manager = null;
         if (dto.getManagerId() != null) {
             manager = memberRepository.findById(dto.getManagerId())
-                    .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+            		.orElseThrow(() -> new MemberNotFoundException());
         }
 
         department.update(dto.getDeptCode(), dto.getDeptName(), manager);
@@ -88,7 +91,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void deleteDepartment(Long departmentId) {
         if (!departmentRepository.existsById(departmentId)) {
-            throw new RuntimeException("해당 부서가 없습니다.");
+        	throw new DepartmentNotFoundException();
         }
         departmentRepository.deleteById(departmentId);
     }

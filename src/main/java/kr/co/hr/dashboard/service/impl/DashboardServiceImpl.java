@@ -12,6 +12,7 @@ import kr.co.hr.attendance.entity.Attendance;
 import kr.co.hr.attendance.repository.AttendanceRepository;
 import kr.co.hr.dashboard.dto.DashboardResponseDto;
 import kr.co.hr.dashboard.service.DashboardService;
+import kr.co.hr.global.exception.MemberNotFoundException;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import kr.co.hr.vacation.entity.VacationQuota;
@@ -35,7 +36,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         // 1. 직원 조회
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+        		.orElseThrow(() -> new MemberNotFoundException());
 
         // 2. 오늘 근태 조회
         LocalDate today = LocalDate.now();
