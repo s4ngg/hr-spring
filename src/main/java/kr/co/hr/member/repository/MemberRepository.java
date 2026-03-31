@@ -13,7 +13,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 결근 처리용 - 출근한 직원 제외하고 조회
     List<Member> findByMemberIdNotIn(List<Long> memberIds);
 
-
+    // 이메일로 조회 ✅ 추가
+    Optional<Member> findByEmail(String email);
+    
     // 부서 인원 수 조회
     Long countByDepartment_DepartmentId(Long departmentId);
 
