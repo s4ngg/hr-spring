@@ -64,13 +64,14 @@ public class Member {
         this.hireDate = dto.getHireDate();
         this.profileImage = dto.getProfileImage();
     }
-	@PreUpdate
-	public void preUpdate() {
-		this.updatedAt = LocalDateTime.now();
-	}
 	
 	public void updateDepartment(Department department) {
 	    this.department = department;
+	}
+	
+	@PreUpdate
+	public void preUpdate() {
+		this.updatedAt = LocalDateTime.now();
 	}
 }
 
