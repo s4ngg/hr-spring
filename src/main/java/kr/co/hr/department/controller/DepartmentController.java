@@ -36,7 +36,7 @@ public class DepartmentController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<DepartmentResponseDto>>> getDepartmentList() {
         List<DepartmentResponseDto> list = departmentService.getDepartmentList();
-        return ResponseEntity.ok(ApiResponse.success("부서 목록 조회 성공", list));
+        return ApiResponse.success("부서 목록 조회 성공", list);
     }
 
     // 부서 검색
@@ -48,8 +48,7 @@ public class DepartmentController {
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<DepartmentResponseDto>>> searchDepartment(
             @RequestParam("deptName") String deptName) {
-        return ResponseEntity.ok(ApiResponse.success("부서 검색 성공",
-                departmentService.searchDepartment(deptName)));
+    	return ApiResponse.success("부서 검색 성공", departmentService.searchDepartment(deptName));
     }
 
     // 부서 추가 - @Valid 추가!
@@ -58,7 +57,7 @@ public class DepartmentController {
     public ResponseEntity<ApiResponse<Void>> createDepartment(
             @RequestBody @Valid DepartmentRequestDto dto) {
         departmentService.createDepartment(dto);
-        return ResponseEntity.ok(ApiResponse.success("부서 생성 성공"));
+        return ApiResponse.success("부서 생성 성공");
     }
 
     // 부서 수정 - @Valid 추가!
@@ -68,7 +67,7 @@ public class DepartmentController {
             @PathVariable("departmentId") Long departmentId,
             @RequestBody @Valid DepartmentRequestDto dto) {
         departmentService.updateDepartment(departmentId, dto);
-        return ResponseEntity.ok(ApiResponse.success("부서 수정 성공"));
+        return ApiResponse.success("부서 수정 성공");
     }
 
     // 부서 삭제
@@ -77,6 +76,6 @@ public class DepartmentController {
     public ResponseEntity<ApiResponse<Void>> deleteDepartment(
             @PathVariable("departmentId") Long departmentId) {
         departmentService.deleteDepartment(departmentId);
-        return ResponseEntity.ok(ApiResponse.success("부서 삭제 성공"));
+        return ApiResponse.success("부서 삭제 성공");
     }
 }

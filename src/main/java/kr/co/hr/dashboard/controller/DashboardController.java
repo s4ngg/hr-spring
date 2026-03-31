@@ -22,7 +22,7 @@ public class DashboardController {
     @GetMapping("/{memberId}")
     public ResponseEntity<ApiResponse<DashboardResponseDto>> getDashboard(
             @PathVariable("memberId") Long memberId) {
-        return ResponseEntity.ok(ApiResponse.success("대시보드 조회 성공",
-                dashboardService.getDashboard(memberId)));
+    	return ApiResponse.success("대시보드 조회 성공",
+                dashboardService.getDashboard(memberId));
     }
 }

@@ -29,7 +29,8 @@ public class FindPasswordController {
     public ResponseEntity<ApiResponse<Void>> sendCode(
             @RequestBody @Valid SendCodeRequestDto dto) {
         findPasswordService.sendVerificationCode(dto);
-        return ResponseEntity.ok(ApiResponse.success("인증번호가 전송되었습니다."));
+        return ApiResponse.success("인증번호가 전송되었습니다.");
+
     }
 
     @Operation(summary = "인증번호 검증", description = "입력한 인증번호를 검증합니다.")
@@ -37,7 +38,7 @@ public class FindPasswordController {
     public ResponseEntity<ApiResponse<Void>> verifyCode(
             @RequestBody @Valid VerifyCodeRequestDto dto) {
         findPasswordService.verifyCode(dto);
-        return ResponseEntity.ok(ApiResponse.success("인증번호가 확인되었습니다."));
+        return ApiResponse.success("인증번호가 확인되었습니다.");
     }
 
     @Operation(summary = "비밀번호 재설정", description = "새로운 비밀번호로 변경합니다.")
@@ -45,6 +46,6 @@ public class FindPasswordController {
     public ResponseEntity<ApiResponse<Void>> resetPassword(
             @RequestBody @Valid ResetPasswordRequestDto dto) {
         findPasswordService.resetPassword(dto);
-        return ResponseEntity.ok(ApiResponse.success("비밀번호가 변경되었습니다."));
+        return ApiResponse.success("비밀번호가 변경되었습니다.");
     }
 }

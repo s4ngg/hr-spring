@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import kr.co.hr.global.exception.MailSendException;
 import kr.co.hr.itcontact.dto.ItContactRequestDto;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,7 @@ public class MailService {
             mailSender.send(mail);
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
-            throw new RuntimeException("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
+        	throw new MailSendException();
         }
     }
 
