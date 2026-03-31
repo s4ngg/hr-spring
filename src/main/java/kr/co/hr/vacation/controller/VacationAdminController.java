@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/admin/vacations")
 @RequiredArgsConstructor
-@Tag(name = "Vacation Admin", description = "관리자 전용 휴가 승인/반려 API")
+@Tag(name = "관리자 휴가관리", description = "관리자 전용 휴가 승인/반려 API")
 public class VacationAdminController {
 	
 	private final VacationService vacationService;
@@ -32,7 +32,7 @@ public class VacationAdminController {
     @GetMapping("/pending")
     public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getPendingVacations() {
         List<VacationResponseDTO> list = vacationService.getPendingVacations();
-        return ResponseEntity.ok(ApiResponse.success("승인 대기 목록 조회 성공", list));
+        return ApiResponse.success("승인 대기 목록 조회 성공", list);
     }
 	
 	
@@ -45,7 +45,7 @@ public class VacationAdminController {
             @RequestBody VacationAdminRequestDTO dto) {
         
         vacationService.updateVacationStatus(vacationId, dto);
-        return ResponseEntity.ok(ApiResponse.success("휴가 상태 변경 처리가 완료되었습니다."));
+        return ApiResponse.success("휴가 상태 변경 처리가 완료되었습니다.");
     }
 	
 	

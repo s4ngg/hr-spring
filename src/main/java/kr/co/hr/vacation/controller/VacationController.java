@@ -21,7 +21,7 @@ import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Vacation", description = "휴가 관리 API")
+@Tag(name = "휴가 관리", description = "휴가 관리 API")
 @RestController
 @RequestMapping("/api/vacations")
 @RequiredArgsConstructor
@@ -45,14 +45,14 @@ public class VacationController {
         dto.setMemberId(loginMemberId);
 
         vacationService.requestVacation(dto);
-        return ResponseEntity.ok(ApiResponse.success("휴가 신청 성공"));
+        return ApiResponse.success("휴가 신청 성공");
     }
 
     // 2. 내 휴가 내역 조회
     @Operation(summary = "내 휴가 내역 조회", description = "특정 직원의 휴가 신청 내역을 조회합니다.")
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getMyVacationHistory(
-            @PathVariable("Authorization") String token) {
+    		@RequestHeader("Authorization") String token) {
     	
     	// 1. Bearer 제거 및 PK 추출
     	String jwt = token.substring(7);
@@ -61,6 +61,6 @@ public class VacationController {
     	// 2. 서비스 호출 (타입 Long)
     	List<VacationResponseDTO> list = vacationService.getMyVacationHistory(memberId);
     	
-        return ResponseEntity.ok(ApiResponse.success("내 휴가 내역 조회 성공", list));
+    	return ApiResponse.success("내 휴가 내역 조회 성공", list);
     }
 }

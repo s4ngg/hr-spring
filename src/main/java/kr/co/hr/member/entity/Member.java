@@ -69,9 +69,8 @@ public class Member {
 	    this.department = department;
 	}
 	
-	@PreUpdate
-	public void preUpdate() {
-		this.updatedAt = LocalDateTime.now();
+	public void updatePassword(String encodedPassword) {
+	    this.password = encodedPassword;
 	}
 }
 

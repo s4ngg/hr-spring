@@ -31,13 +31,12 @@ public class ItContactController {
     public ResponseEntity<ApiResponse<Void>> createContact(
             @RequestBody @Valid ItContactRequestDto dto) {
         itContactService.createContact(dto);
-        return ResponseEntity.ok(ApiResponse.success("문의가 접수되었습니다."));
+        return ApiResponse.success("문의가 접수되었습니다.");
     }
 
     @Operation(summary = "IT 문의 목록 조회", description = "접수된 IT 문의 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<ApiResponse<List<ItContactResponseDto>>> getContactList() {
-        return ResponseEntity.ok(ApiResponse.success("문의 목록 조회 성공",
-                itContactService.getContactList()));
+    	return ApiResponse.success("문의 목록 조회 성공", itContactService.getContactList());
     }
 }
