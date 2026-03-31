@@ -77,19 +77,24 @@ public class VacationServiceImpl implements VacationService{
     // 휴가 신청 내역 조회 로직
     @Override
     @Transactional(readOnly = true)
-    public List<VacationResponseDTO> getMyVacationHistory(Long memberId){
-    
-    List<Vacation> vacations = vacationRepository.findByMember_MemberIdOrderByCreatedAtDesc(memberId);
-    
-    return vacations.stream().map(v -> VacationResponseDTO.builder()
+    public List<VacationResponseDTO> getMyVacationHistory(Long memberId) {
+        List<Vacation> vacations = vacationRepository.findByMember_MemberIdOrderByCreatedAtDesc(memberId);
+        
+        return vacations.stream().map(v -> {
+           
+            long dayDiff = java.time.temporal.ChronoUnit.DAYS.between(v.getStartDate(), v.getEndDate()) + 1;
+
+            return VacationResponseDTO.builder()
                     .vacationId(v.getVacationId())
+                    .memberName(v.getMember().getName())
                     .vacationType(v.getVacationType())
                     .startDate(v.getStartDate())
                     .endDate(v.getEndDate())
+                    .days((int) dayDiff)
                     .status(v.getStatus().name())
                     .createdAt(v.getCreatedAt())
-                    .build())
-            .collect(Collectors.toList());
+                    .build();
+        }).collect(Collectors.toList());
     }
     
     
