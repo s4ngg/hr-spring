@@ -24,7 +24,6 @@ import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "직원 관리", description = "직원 관련 API")
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -32,6 +31,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Tag(name = "전체 직원 조회 + 이름 검색(페이징)")
     @Operation(summary = "전체 직원 조회 + 이름 검색 (페이징)")
     @GetMapping
     public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> getMembers(
@@ -40,6 +40,7 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.success("직원 목록 조회 성공", memberService.getMembers(name, pageable)));
     }
 
+    @Tag(name = "단일 직원 조회")
     @Operation(summary = "단일 직원 조회")
     @GetMapping("/{memberId}")
     public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(
@@ -47,7 +48,7 @@ public class MemberController {
             @PathVariable("memberId") Long memberId) {
         return ResponseEntity.ok(ApiResponse.success("직원 조회 성공", memberService.getMember(memberId)));
     }
-
+    @Tag(name = "직원 등록")
     @Operation(summary = "직원 등록")
     @PostMapping
     public ResponseEntity<ApiResponse<MemberResponseDTO>> createMember(
@@ -55,6 +56,7 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.success("직원 등록 성공", memberService.createMember(requestDTO)));
     }
 
+    @Tag(name = "직원 정보 수정")
     @Operation(summary = "직원 정보 수정")
     @PatchMapping("/{memberId}")
     public ResponseEntity<ApiResponse<MemberResponseDTO>> updateMember(
@@ -63,6 +65,7 @@ public class MemberController {
         return ResponseEntity.ok(ApiResponse.success("직원 수정 성공", memberService.updateMember(memberId, requestDTO)));
     }
 
+    @Tag(name = "직원 삭제")
     @Operation(summary = "직원 삭제")
     @DeleteMapping("/{memberId}")
     public ResponseEntity<ApiResponse<Void>> deleteMember(
