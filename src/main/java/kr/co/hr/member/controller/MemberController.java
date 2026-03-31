@@ -64,14 +64,6 @@ public class MemberController {
             @Valid @RequestBody MemberRequestDTO requestDTO) {
         return ResponseEntity.ok(ApiResponse.success("직원 수정 성공", memberService.updateMember(memberId, requestDTO)));
     }
-
-    @Operation(summary = "직원 이름 검색")
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> searchMembers(
-            @RequestParam("name") String name,
-            @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(ApiResponse.success("직원 검색 성공", memberService.searchByName(name, pageable)));
-    }
     @Tag(name = "직원 삭제")
     @Operation(summary = "직원 삭제")
     @DeleteMapping("/{memberId}")
