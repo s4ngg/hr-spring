@@ -6,9 +6,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-
-import kr.co.hr.global.exception.MailSendException;
+import kr.co.hr.global.exception.BusinessException;
+import kr.co.hr.global.exception.ErrorCode;
 import kr.co.hr.itcontact.dto.ItContactRequestDto;
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +28,7 @@ public class MailService {
             mailSender.send(mail);
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
-        	throw new MailSendException();
+        	throw new BusinessException(ErrorCode.MAIL_SEND_FAIL);
         }
     }
 
@@ -58,7 +57,7 @@ public class MailService {
             mail.setText("인증번호: " + code + "\n\n3분 이내에 입력해주세요.");
             mailSender.send(mail);
         } catch (Exception e) {
-            throw new RuntimeException("메일 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
+        	throw new BusinessException(ErrorCode.MAIL_SEND_FAIL);
         }
     }
 }

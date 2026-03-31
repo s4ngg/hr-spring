@@ -1,21 +1,15 @@
 package kr.co.hr.department.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import kr.co.hr.department.dto.DepartmentRequestDto;
 import kr.co.hr.department.dto.DepartmentResponseDto;
 import kr.co.hr.department.entity.Department;
 import kr.co.hr.department.repository.DepartmentRepository;
 import kr.co.hr.department.service.DepartmentService;
-import kr.co.hr.global.exception.DepartmentNotFoundException;
-import kr.co.hr.global.exception.MemberNotFoundException;
-import kr.co.hr.global.exception.SearchResultNotFoundException;
+import kr.co.hr.global.exception.BusinessException;
+import kr.co.hr.global.exception.ErrorCode;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> result = departmentRepository.findByDeptNameContaining(deptName);
 
         if (result.isEmpty()) {
-        	throw new SearchResultNotFoundException();
+        	throw new BusinessException(ErrorCode.SEARCH_RESULT_NOT_FOUND);
         }
 
         return DepartmentResponseDto.fromList(
@@ -57,7 +51,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Member manager = null;
         if (dto.getManagerId() != null) {
             manager = memberRepository.findById(dto.getManagerId())
-            		.orElseThrow(() -> new MemberNotFoundException());
+            		.orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         }
         Department newDept = new Department(
                 null,
@@ -76,12 +70,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void updateDepartment(Long departmentId, DepartmentRequestDto dto) {
         Department department = departmentRepository.findById(departmentId)
-        		.orElseThrow(() -> new DepartmentNotFoundException());
+        		.orElseThrow(() -> new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
         Member manager = null;
         if (dto.getManagerId() != null) {
             manager = memberRepository.findById(dto.getManagerId())
-            		.orElseThrow(() -> new MemberNotFoundException());
+            		.orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         }
 
         department.update(dto.getDeptCode(), dto.getDeptName(), manager);
@@ -95,8 +89,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void deleteDepartment(Long departmentId) {
         if (!departmentRepository.existsById(departmentId)) {
 
-        	throw new DepartmentNotFoundException();
-        }
-        departmentRepository.deleteById(departmentId);
+        	throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
+    }
     }
 }

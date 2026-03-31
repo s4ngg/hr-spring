@@ -11,6 +11,8 @@ import kr.co.hr.attendance.dto.AttendanceResponseDTO;
 import kr.co.hr.attendance.entity.Attendance;
 import kr.co.hr.attendance.repository.AttendanceRepository;
 import kr.co.hr.attendance.service.AttendanceService;
+import kr.co.hr.global.exception.BusinessException;
+import kr.co.hr.global.exception.ErrorCode;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +47,11 @@ public class AttendancesServiceImpl implements AttendanceService {
     @Transactional
     public AttendanceResponseDTO checkIn(AttendanceRequestDTO requestDTO) {
         Member member = memberRepository.findById(requestDTO.getMemberId())
-                .orElseThrow(() -> new RuntimeException("해당 직원이 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         if (attendanceRepository.existsByMember_MemberIdAndWorkDate(
         		requestDTO.getMemberId(), LocalDate.now())) {
-            throw new RuntimeException("이미 오늘 출근 체크인을 하셨습니다.");
+            throw new BusinessException(ErrorCode.ALREADY_CHECKED_IN);
         }
         Attendance attendance = Attendance.checkIn(
                 member,
@@ -64,7 +66,7 @@ public class AttendancesServiceImpl implements AttendanceService {
     @Transactional
     public AttendanceResponseDTO checkOut(Long attendanceId, AttendanceRequestDTO requestDTO) {
         Attendance attendance = attendanceRepository.findById(attendanceId)
-                .orElseThrow(() -> new RuntimeException("근태 기록을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.ATTENDANCE_NOT_FOUND));
         attendance.checkOut();
         return new AttendanceResponseDTO(attendanceRepository.save(attendance));
     }

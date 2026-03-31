@@ -1,5 +1,6 @@
 package kr.co.hr.global.exception;
 
+import kr.co.hr.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,7 +16,8 @@ public class GlobalExceptionHandler {
 	// RuntimeException 대신 BusinessException으로 교체
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ApiResponse<?>> handleBusinessException(BusinessException e) {
-		return ApiResponse.fail(e.getMessage(), e.getStatus());
+	    ErrorCode errorCode = e.getErrorCode();
+	    return ApiResponse.fail(errorCode.getMessage(), errorCode.getStatus());
 	}
 
 	// 유효성 검사 실패 처리 (@Valid 에서 걸린 경우) -> @Valid 는 말이 안되는 값도 DB에 저장되기 때문에 서버가 거를 수 있도록 필터링 하는  어노테이션
