@@ -55,6 +55,8 @@ public class Member {
 	public void update(MemberRequestDTO dto, Department department) {
 		this.employeeNo = dto.getEmployeeNo();
 	    this.department = department;
+	}
+	public void update(MemberRequestDTO dto) {
         this.name = dto.getName();
         this.email = dto.getEmail();
         this.password = dto.getPassword();
@@ -71,6 +73,10 @@ public class Member {
 	
 	public void updateDepartment(Department department) {
 	    this.department = department;
+	}
+	
+	public void updatePassword(String encodedPassword) {
+	    this.password = encodedPassword;
 	}
 }
 

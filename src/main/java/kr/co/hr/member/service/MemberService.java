@@ -10,7 +10,9 @@ import kr.co.hr.member.dto.MemberResponseDTO;
 
 public interface MemberService {
 
-	List<MemberResponseDTO> getAllMembers();
+
+    Page<MemberResponseDTO> getMembers(String name, Pageable pageable);
+
 	
 	MemberResponseDTO getMember(Long memberId);
 	
@@ -19,10 +21,5 @@ public interface MemberService {
 	MemberResponseDTO updateMember(Long memberId, MemberRequestDTO requestDTO);
 	
 	void deleteMember(Long memberId);
-	
-	List<MemberResponseDTO> searchByName(String name);
-	
-	Page<MemberResponseDTO> getAllMembers(Pageable pageable);
-	
-	Page<MemberResponseDTO> searchByName(String name, Pageable pageable);
 }
+
