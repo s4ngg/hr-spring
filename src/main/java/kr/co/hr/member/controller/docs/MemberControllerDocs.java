@@ -49,7 +49,7 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<Page<MemberResponseDTO>> getAllMembers(
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<Page<MemberResponseDTO>>> getAllMembers(
             @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) String name);
 
@@ -86,7 +86,7 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<MemberResponseDTO> getMember(@PathVariable Long memberId);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<MemberResponseDTO>> getMember(@PathVariable Long memberId);
 
     @Operation(summary = "직원 등록", description = "새로운 직원을 등록합니다.")
     @ApiResponses({
@@ -121,7 +121,7 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<MemberResponseDTO> createMember(@RequestBody MemberRequestDTO requestDTO);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<MemberResponseDTO>> createMember(@RequestBody MemberRequestDTO requestDTO);
 
     @Operation(summary = "직원 정보 수정", description = "특정 직원의 정보를 수정합니다.")
     @ApiResponses({
@@ -166,7 +166,7 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<MemberResponseDTO> updateMember(@PathVariable Long memberId, @RequestBody MemberRequestDTO requestDTO);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<MemberResponseDTO>> updateMember(@PathVariable Long memberId, @RequestBody MemberRequestDTO requestDTO);
 
     @Operation(summary = "직원 삭제", description = "특정 직원을 삭제합니다.")
     @ApiResponses({
@@ -182,5 +182,5 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<Void> deleteMember(@PathVariable Long memberId);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<Void>> deleteMember(@PathVariable Long memberId);
 }
