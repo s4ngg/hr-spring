@@ -3,12 +3,14 @@ package kr.co.hr.findpassword.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Schema(description = "인증번호 검증 요청 DTO")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class VerifyCodeRequestDto {
 
     @Schema(description = "이메일", example = "example@nexuspro.com")

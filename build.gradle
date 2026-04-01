@@ -1,7 +1,13 @@
 plugins {
+<<<<<<< HEAD
    id 'java'
    id 'org.springframework.boot' version '3.5.10'
    id 'io.spring.dependency-management' version '1.1.7'
+=======
+    id 'java'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
+>>>>>>> 69f78ccf3f37eb9669ba65e84a667728cad8b181
 }
 
 group = 'kr.co'
@@ -9,6 +15,7 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
+<<<<<<< HEAD
    toolchain {
       languageVersion = JavaLanguageVersion.of(21)
    }
@@ -16,6 +23,15 @@ java {
 
 repositories {
    mavenCentral()
+=======
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+>>>>>>> 69f78ccf3f37eb9669ba65e84a667728cad8b181
 }
 
 dependencies {
@@ -63,3 +79,18 @@ tasks.withType(JavaExec).configureEach {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/test']
+        }
+    }
+}
+>>>>>>> 69f78ccf3f37eb9669ba65e84a667728cad8b181
