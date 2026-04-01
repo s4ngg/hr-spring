@@ -1,7 +1,9 @@
 package kr.co.hr.member.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.hr.member.controller.docs.MemberControllerDocs;
 import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
@@ -31,8 +31,10 @@ public class MemberController implements MemberControllerDocs{
 	// 전체 직원 조회
 	@Override
 	@GetMapping
-	public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
-	    return ResponseEntity.ok(memberService.getAllMembers());
+	public ResponseEntity<Page<MemberResponseDTO>> getAllMembers(
+	        @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable,
+	        @RequestParam(required = false) String name) {
+	    return ResponseEntity.ok(memberService.getMembers(name, pageable));
 	}
 	
 	// 단일 직원 조회

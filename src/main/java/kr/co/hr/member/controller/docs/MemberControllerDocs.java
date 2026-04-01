@@ -1,10 +1,13 @@
 package kr.co.hr.member.controller.docs;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +16,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.co.hr.global.response.docs.ApiResponseVoid;
 import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.dto.docs.ApiResponseMember;
@@ -47,7 +49,9 @@ public interface MemberControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<List<MemberResponseDTO>> getAllMembers();
+    ResponseEntity<Page<MemberResponseDTO>> getAllMembers(
+            @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(required = false) String name);
 
     @Operation(summary = "단일 직원 조회", description = "특정 직원의 정보를 조회합니다.")
     @ApiResponses({

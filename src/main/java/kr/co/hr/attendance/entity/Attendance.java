@@ -66,5 +66,10 @@ public class Attendance {
     public void checkOut() {
         this.checkOut = LocalTime.now();
         this.status = AttendanceStatus.NORMAL.name();
+        
+       if (this.checkIn != null) {
+    	   long minutes = java.time.Duration.between(this.checkIn, this.checkOut).toMinutes();
+    	   this.workHours = Math.round((minutes / 60.0) * 10.0) / 10.0; //소수점 1자리
+       }
     }
 }

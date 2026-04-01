@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kr.co.hr.attendance.controller.docs.AttendanceControllerDocs;
 import kr.co.hr.attendance.dto.AttendanceRequestDTO;
 import kr.co.hr.attendance.dto.AttendanceResponseDTO;
@@ -22,7 +19,7 @@ import kr.co.hr.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/attendances")
+@RequestMapping("/api/attendances")
 @RequiredArgsConstructor
 public class AttendanceController implements AttendanceControllerDocs {
 
