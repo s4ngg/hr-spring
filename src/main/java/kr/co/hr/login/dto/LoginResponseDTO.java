@@ -1,5 +1,7 @@
 package kr.co.hr.login.dto;
 
+import java.time.LocalDate;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class LoginResponseDTO {
 	
 	@Schema(description = "부서 번호", example = "15")
 	private Long departmentId;
+	
+	private LocalDate hireDate;
 	
 	@Schema(description = "JWT 토큰")
     private String token; // 토큰도 잊지 말고 꼭 담아주세요.
