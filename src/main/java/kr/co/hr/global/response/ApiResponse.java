@@ -24,7 +24,6 @@ public class ApiResponse<T> {
 	private T data;
 
     // 성공 (데이터 있음)
-    
     public static <T> ResponseEntity<ApiResponse<T>> success(String message, T data) {
         return ResponseEntity.ok(new ApiResponse<>(true, message, data));
     }
