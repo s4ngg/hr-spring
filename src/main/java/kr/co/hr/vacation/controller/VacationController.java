@@ -22,7 +22,7 @@ import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "휴가 관리", description = "휴가 관리 API")
+@Tag(name = "Vacation Management", description = "휴가 관리 API")
 @RestController
 @RequestMapping("/api/vacations")
 @RequiredArgsConstructor

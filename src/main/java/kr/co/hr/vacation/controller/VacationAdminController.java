@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/admin/vacations")
 @RequiredArgsConstructor
-@Tag(name = "관리자 휴가관리", description = "관리자 전용 휴가 승인/반려 API")
+@Tag(name = "Admin Vacation Management", description = "관리자 전용 휴가 승인/반려 API")
 public class VacationAdminController implements VacationAdminControllerDocs {
 	
 	private final VacationService vacationService;
