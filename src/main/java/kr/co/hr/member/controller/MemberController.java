@@ -19,12 +19,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.hr.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import kr.co.hr.global.response.ApiResponse;
+import kr.co.hr.member.controller.docs.MemberControllerDocs;
 import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @Tag(name = "직원 관리", description = "직원 관련 API")
+
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor

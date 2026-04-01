@@ -19,6 +19,10 @@ public enum ErrorCode {
     // Login
     INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "INVALID_LOGIN", "아이디 또는 비밀번호가 올바르지 않습니다."),
 
+    ATTENDANCE_NOT_FOUND(HttpStatus.NOT_FOUND, "ATTENDANCE_NOT_FOUND", "해당 근태 정보가 없습니다."),
+    ALREADY_CHECKED_IN(HttpStatus.BAD_REQUEST, "ALREADY_CHECKED_IN", "이미 출근 처리되었습니다."),
+    NOT_CHECKED_IN(HttpStatus.BAD_REQUEST, "NOT_CHECKED_IN", "출근 기록이 없습니다."),
+    
     // FindPassword
     VERIFICATION_EXPIRED(HttpStatus.BAD_REQUEST, "VERIFICATION_EXPIRED", "인증번호가 만료되었거나 요청하지 않은 이메일입니다."),
     INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "INVALID_VERIFICATION_CODE", "인증번호가 올바르지 않습니다."),

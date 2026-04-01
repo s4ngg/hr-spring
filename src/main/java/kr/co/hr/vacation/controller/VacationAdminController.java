@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.hr.global.response.ApiResponse;
 import kr.co.hr.vacation.controller.docs.VacationAdminControllerDocs;
 import kr.co.hr.vacation.dto.VacationAdminRequestDTO;
@@ -22,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/admin/vacations")
 @RequiredArgsConstructor
+@Tag(name = "Vacation Admin", description = "관리자 전용 휴가 승인/반려 API")
+@Tag(name = "관리자 휴가관리", description = "관리자 전용 휴가 승인/반려 API")
 public class VacationAdminController implements VacationAdminControllerDocs {
 	
 	private final VacationService vacationService;
