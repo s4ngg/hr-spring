@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import kr.co.hr.department.entity.Department;
 import kr.co.hr.member.dto.MemberRequestDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter

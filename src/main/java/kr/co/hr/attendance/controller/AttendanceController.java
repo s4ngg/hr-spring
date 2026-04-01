@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.hr.attendance.controller.docs.AttendanceControllerDocs;
 import kr.co.hr.attendance.dto.AttendanceRequestDTO;
 import kr.co.hr.attendance.dto.AttendanceResponseDTO;
@@ -19,13 +17,14 @@ import kr.co.hr.attendance.service.AttendanceService;
 import kr.co.hr.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "근태 관리", description = "근태 관련 API")
+
 @RestController
 @RequestMapping("/api/attendances")
 @RequiredArgsConstructor
 public class AttendanceController implements AttendanceControllerDocs {
+
     private final AttendanceService attendanceService;
-   
+
     @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<AttendanceResponseDTO>>> getAllAttendances() {
