@@ -14,12 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DepartmentRequestDto {
 
-	@Schema(description = "부서 코드", example = "DEV")
+	@Schema(description = "부서 코드", example = "DEV", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "부서 코드는 필수입니다.")
     @Size(max = 10, message = "부서 코드는 10자 이하여야 합니다.")
     private String deptCode;
 
-	@Schema(description = "부서명", example = "개발팀")
+	@Schema(description = "부서명", example = "개발팀", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "부서명은 필수입니다.")
     @Size(max = 50, message = "부서명은 50자 이하여야 합니다.")
     private String deptName;

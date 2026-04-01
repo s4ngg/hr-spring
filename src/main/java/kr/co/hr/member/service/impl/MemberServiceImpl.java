@@ -1,6 +1,7 @@
 package kr.co.hr.member.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -8,10 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityNotFoundException;
 import kr.co.hr.department.entity.Department;
 import kr.co.hr.department.repository.DepartmentRepository;
-import kr.co.hr.global.exception.BusinessException;
-import kr.co.hr.global.exception.ErrorCode;
 import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.entity.Member;
@@ -27,7 +27,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final DepartmentRepository departmentRepository;
 
-    // ✅ getAllMembers() + searchByName() → getMembers()로 통합
     @Override
     @Transactional(readOnly = true)
     public Page<MemberResponseDTO> getMembers(String name, Pageable pageable) {
@@ -37,23 +36,21 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByNameContaining(name, pageable).map(MemberResponseDTO::new);
     }
 
- // 단일 직원 조회
     @Override
     @Transactional(readOnly = true)
     public MemberResponseDTO getMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)); // ✅ 여기
+                .orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
         return new MemberResponseDTO(member);
     }
 
     @Override
     @Transactional
     public MemberResponseDTO createMember(MemberRequestDTO requestDTO) {
-        Department department = null;
-        if (requestDTO.getDepartmentId() != null) {
-            department = departmentRepository.findById(requestDTO.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("부서를 찾을 수 없습니다."));
-        }
+        Department department = Optional.ofNullable(requestDTO.getDepartmentId())
+                .map(id -> departmentRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("부서를 찾을 수 없습니다.")))
+                .orElse(null);
         Member member = new Member();
         member.update(requestDTO, department);
         return new MemberResponseDTO(memberRepository.save(member));
@@ -64,11 +61,10 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDTO updateMember(Long memberId, MemberRequestDTO requestDTO) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("직원을 찾을 수 없습니다. id: " + memberId));
-        Department department = null;
-        if (requestDTO.getDepartmentId() != null) {
-            department = departmentRepository.findById(requestDTO.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("부서를 찾을 수 없습니다."));
-        }
+        Department department = Optional.ofNullable(requestDTO.getDepartmentId())
+                .map(id -> departmentRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("부서를 찾을 수 없습니다.")))
+                .orElse(null);
         member.update(requestDTO, department);
         return new MemberResponseDTO(member);
     }

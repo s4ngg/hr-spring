@@ -1,6 +1,7 @@
 package kr.co.hr.department.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kr.co.hr.department.dto.DepartmentRequestDto;
@@ -88,8 +89,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void deleteDepartment(Long departmentId) {
         if (!departmentRepository.existsById(departmentId)) {
-
         	throw new BusinessException(ErrorCode.DEPARTMENT_NOT_FOUND);
-    }
+        }
+        departmentRepository.deleteById(departmentId);
     }
 }

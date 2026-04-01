@@ -15,24 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kr.co.hr.department.controller.docs.DepartmentControllerDocs;
 import kr.co.hr.department.dto.DepartmentRequestDto;
 import kr.co.hr.department.dto.DepartmentResponseDto;
 import kr.co.hr.department.service.DepartmentService;
 import kr.co.hr.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Department", description = "부서 관리 API")
 @RestController
 @RequestMapping("/api/department")
 @RequiredArgsConstructor
-public class DepartmentController {
+public class DepartmentController implements DepartmentControllerDocs {
 
     private final DepartmentService departmentService;
 
     // 부서 목록 조회
-    @Operation(summary = "부서 목록 조회", description = "전체 부서 목록을 조회합니다.")
+    @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<DepartmentResponseDto>>> getDepartmentList() {
         List<DepartmentResponseDto> list = departmentService.getDepartmentList();
@@ -40,11 +39,7 @@ public class DepartmentController {
     }
 
     // 부서 검색
-    @Operation(summary = "부서 검색", description = "부서명으로 부서를 검색합니다.")
-    @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "검색 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "검색 결과 없음")
-    })
+    @Override
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<DepartmentResponseDto>>> searchDepartment(
             @RequestParam("deptName") String deptName) {
@@ -52,7 +47,7 @@ public class DepartmentController {
     }
 
     // 부서 추가 - @Valid 추가!
-    @Operation(summary = "부서 생성", description = "새로운 부서를 생성합니다.")
+    @Override
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> createDepartment(
             @RequestBody @Valid DepartmentRequestDto dto) {
@@ -61,7 +56,7 @@ public class DepartmentController {
     }
 
     // 부서 수정 - @Valid 추가!
-    @Operation(summary = "부서 수정", description = "부서 정보를 수정합니다.")
+    @Override
     @PatchMapping("/{departmentId}")
     public ResponseEntity<ApiResponse<Void>> updateDepartment(
             @PathVariable("departmentId") Long departmentId,
@@ -71,7 +66,7 @@ public class DepartmentController {
     }
 
     // 부서 삭제
-    @Operation(summary = "부서 삭제", description = "부서를 삭제합니다.")
+    @Override
     @DeleteMapping("/{departmentId}")
     public ResponseEntity<ApiResponse<Void>> deleteDepartment(
             @PathVariable("departmentId") Long departmentId) {
