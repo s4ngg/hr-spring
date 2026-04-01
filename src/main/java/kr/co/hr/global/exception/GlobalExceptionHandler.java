@@ -20,7 +20,10 @@ public class GlobalExceptionHandler {
 	 @ExceptionHandler(BusinessException.class)
 	 public ResponseEntity<ApiResponse<?>> handleBusinessException(BusinessException e) {
 	     ErrorCode errorCode = e.getErrorCode();
-	     logger.warn("비즈니스 예외 발생 - 코드: {}, 메시지: {}", errorCode.name(), errorCode.getMessage());
+	     logger.warn("비즈니스 예외 발생 - 코드: {}, 상태: {}, 메시지: {}",
+	    		    errorCode.name(),
+	    		    errorCode.getStatus(),
+	    		    errorCode.getMessage());	
 	     return ApiResponse.fail(errorCode.getMessage(), errorCode.getStatus());
 	 }
 
@@ -32,7 +35,7 @@ public class GlobalExceptionHandler {
 	             .stream().map(FieldError::getDefaultMessage)
 	             .findFirst()
 	             .orElse("유효성 검사 실패");
-	     logger.warn("유효성 검사 실패 - 메시지: {}", errorMessage);
+	     logger.warn("유효성 검사 실패 - 상태: {}, 메시지: {}", HttpStatus.BAD_REQUEST, errorMessage);
 	     return ApiResponse.fail(errorMessage, HttpStatus.BAD_REQUEST);
 	 }
 }
