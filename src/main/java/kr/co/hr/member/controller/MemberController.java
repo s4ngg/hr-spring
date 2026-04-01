@@ -5,19 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import kr.co.hr.global.response.ApiResponse;
 import kr.co.hr.member.controller.docs.MemberControllerDocs;
@@ -25,49 +13,49 @@ import kr.co.hr.member.dto.MemberRequestDTO;
 import kr.co.hr.member.dto.MemberResponseDTO;
 import kr.co.hr.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-    
+
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-public class MemberController implements MemberControllerDocs{
-	
-	private final MemberService memberService;
-	
-	// 전체 직원 조회
-	@Override
-	@GetMapping
-	public ResponseEntity<Page<MemberResponseDTO>> getAllMembers(
-	        @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable,
-	        @RequestParam(required = false) String name) {
-	    return ResponseEntity.ok(memberService.getMembers(name, pageable));
-	}
-	
-	// 단일 직원 조회
-	@Override
-	@GetMapping("/{memberId}")
-	public ResponseEntity<MemberResponseDTO> getMember(@PathVariable Long memberId) {
-		return ResponseEntity.ok(memberService.getMember(memberId));
-	}
-	
-	// 직원 등록
-	@Override
-	@PostMapping
-	public ResponseEntity<MemberResponseDTO> createMember(@RequestBody MemberRequestDTO requestDTO) {
-		return ResponseEntity.ok(memberService.createMember(requestDTO));
-	}
-	
-	// 직원 수정
-	@Override
-	@PutMapping("/{memberId}")
-	public ResponseEntity<MemberResponseDTO> updateMember(@PathVariable Long memberId, @RequestBody MemberRequestDTO requestDTO) {
-		return ResponseEntity.ok(memberService.updateMember(memberId, requestDTO));
-	}
-	
-	// 직원 삭제
-	@Override
-	@DeleteMapping("/{memberId}")
-	public ResponseEntity<Void> deleteMember(@PathVariable("memberId") Long memberId) {
-	memberService.deleteMember(memberId);
-	return ResponseEntity.noContent().build();
-	}
+public class MemberController implements MemberControllerDocs {
+
+    private final MemberService memberService;
+
+    @Override
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<MemberResponseDTO>>> getAllMembers(
+            @PageableDefault(size = 10, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(required = false) String name) {
+        return ApiResponse.success("직원 목록 조회 성공", memberService.getMembers(name, pageable));
+    }
+
+    @Override
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> getMember(
+            @PathVariable Long memberId) {
+        return ApiResponse.success("직원 조회 성공", memberService.getMember(memberId));
+    }
+
+    @Override
+    @PostMapping
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> createMember(
+            @Valid @RequestBody MemberRequestDTO requestDTO) {
+        return ApiResponse.success("직원 등록 성공", memberService.createMember(requestDTO));
+    }
+
+    @Override
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<MemberResponseDTO>> updateMember(
+            @PathVariable Long memberId,
+            @Valid @RequestBody MemberRequestDTO requestDTO) {
+        return ApiResponse.success("직원 수정 성공", memberService.updateMember(memberId, requestDTO));
+    }
+
+    @Override
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<Void>> deleteMember(
+            @PathVariable Long memberId) {
+        memberService.deleteMember(memberId);
+        return ApiResponse.success("직원 삭제 성공");
+    }
 }

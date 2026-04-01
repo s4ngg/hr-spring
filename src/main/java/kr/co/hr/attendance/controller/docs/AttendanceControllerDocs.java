@@ -45,7 +45,7 @@ public interface AttendanceControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<List<AttendanceResponseDTO>> getAllAttendances();
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<List<AttendanceResponseDTO>>> getAllAttendances();
 
     @Operation(summary = "특정 직원 근태 조회", description = "직원 ID로 해당 직원의 근태 목록을 조회합니다.")
     @ApiResponses({
@@ -81,7 +81,7 @@ public interface AttendanceControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<List<AttendanceResponseDTO>> getAttendancesByMember(@PathVariable Long memberId);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<List<AttendanceResponseDTO>>> getAttendancesByMember(@PathVariable Long memberId);
 
     @Operation(summary = "출근 체크인", description = "직원의 출근을 등록합니다.")
     @ApiResponses({
@@ -125,7 +125,7 @@ public interface AttendanceControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<AttendanceResponseDTO> checkIn(@RequestBody AttendanceRequestDTO requestDTO);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<AttendanceResponseDTO>> checkIn(@RequestBody AttendanceRequestDTO requestDTO);
 
     @Operation(summary = "퇴근 체크아웃", description = "특정 근태 기록에 퇴근 시간을 등록합니다.")
     @ApiResponses({
@@ -169,7 +169,7 @@ public interface AttendanceControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<AttendanceResponseDTO> checkOut(@PathVariable Long attendanceId, @RequestBody AttendanceRequestDTO requestDTO);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<AttendanceResponseDTO>> checkOut(@PathVariable Long attendanceId, @RequestBody AttendanceRequestDTO requestDTO);
 
     @Operation(summary = "근태 삭제", description = "특정 근태 기록을 삭제합니다.")
     @ApiResponses({
@@ -185,5 +185,5 @@ public interface AttendanceControllerDocs {
                 """)
             ))
     })
-    ResponseEntity<Void> deleteAttendance(@PathVariable Long attendanceId);
+    ResponseEntity<kr.co.hr.global.response.ApiResponse<Void>> deleteAttendance(@PathVariable Long attendanceId);
 }
