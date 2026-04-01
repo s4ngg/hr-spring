@@ -31,6 +31,7 @@ public class LoginResponseDTO {
 	@Schema(description = "부서 번호", example = "15")
 	private Long departmentId;
 	
+	@Schema(description = "입사일", example = "2026-03-25")
 	private LocalDate hireDate;
 	
 	@Schema(description = "JWT 토큰")
