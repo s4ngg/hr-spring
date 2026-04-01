@@ -19,6 +19,8 @@ import kr.co.hr.vacation.repository.VacationQuotaRepository;
 import kr.co.hr.vacation.repository.VacationRepository;
 import kr.co.hr.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 
 
@@ -124,44 +126,59 @@ public class VacationServiceImpl implements VacationService{
     
     
     
-   @Override
-   @Transactional
+    @Override
+    @Transactional
     public void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto) {
-	   // 휴가 신청 내역 조회
-    	Vacation vacation = vacationRepository.findById(vacationId)
-    			.orElseThrow(() -> new RuntimeException("해당 휴가 신청 건을 찾을 수 없습니다."));
-    	
-    	// 이미 처리된 건인지 확인 (PENDING 상태일 때만 처리가 가능)
-    	if (vacation.getStatus() != VacationStatus.PENDING) {
-    		throw new RuntimeException("이미 처리 완료된 신청 건입니다.");
-    	}
-    	
-    	// 상태 업데이트 (DTO 문자열을 Enum으로 변환하여 저장)
-    	VacationStatus newStatus = VacationStatus.valueOf(dto.getStatus());
-    	vacation.setStatus(newStatus);
-    	
-    	// 승인인 경우 연차 (Quota)에서 사용 일수 업데이트 
-    	if (newStatus == VacationStatus.APPROVED) {
-    		
-    		// 날짜 차이 계산
-    		long days = java.time.temporal.ChronoUnit.DAYS.between(vacation.getStartDate(), vacation.getEndDate()) + 1;
-    		
-    		// 연관된  휴가 (Quota)에서 정보 가져오기 
-    		VacationQuota quota = vacation.getVacationQuota();
-    		
-    		// 기존 사용 일수 + 이번에 승인된 일수 
-    		quota.setUsedDays(quota.getUsedDays() + (int) days);
-    	}
+        Vacation vacation = vacationRepository.findById(vacationId)
+                .orElseThrow(() -> new RuntimeException("해당 휴가 신청 건을 찾을 수 없습니다."));
+
+        if (vacation.getStatus() != VacationStatus.PENDING) {
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 처리 완료된 신청 건입니다.");
+        }
+
+        VacationStatus newStatus;
+        try {
+            newStatus = VacationStatus.valueOf(dto.getStatus());
+        } catch (Exception e) {
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 상태값입니다.");
+        }
+
+        vacation.setStatus(newStatus);
+
+        if (newStatus == VacationStatus.APPROVED) {
+            if (vacation.getStartDate() == null || vacation.getEndDate() == null) {
+            	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "휴가 날짜 정보가 올바르지 않습니다.");
+            }
+
+            long days = java.time.temporal.ChronoUnit.DAYS.between(
+                    vacation.getStartDate(),
+                    vacation.getEndDate()
+            ) + 1;
+
+            VacationQuota quota = vacation.getVacationQuota();
+            if (quota == null) {
+            	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 정보(quota)를 찾을 수 없습니다.");
+            }
+
+            int currentUsedDays = quota.getUsedDays() != null ? quota.getUsedDays() : 0;
+            int totalDays = quota.getTotalDays() != null ? quota.getTotalDays() : 0;
+
+            if (currentUsedDays + days > totalDays) {
+            	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 일수를 초과했습니다.");
+            }
+
+            quota.setUsedDays(currentUsedDays + (int) days);
+        }
     	
     	// 5. 반려(REJECTED) 시 사유 저장 
         // if (newStatus == VacationStatus.REJECTED) {
         //     vacation.setRejectReason(dto.getRejectReason());
         // }
     	
+
+    
+    
     }
-    
-    
-    
     
     
 }
