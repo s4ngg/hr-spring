@@ -25,10 +25,10 @@ public class DashboardResponseDto {
     @Schema(description = "직원 이름", example = "홍길동")
     private String memberName;
 
-    @Schema(description = "오늘 출근 시간")
+    @Schema(description = "오늘 출근 시간", example = "09:00:00")
     private LocalTime todayCheckIn;
 
-    @Schema(description = "오늘 퇴근 시간")
+    @Schema(description = "오늘 퇴근 시간", example = "18:00:00")
     private LocalTime todayCheckOut;
 
     @Schema(description = "오늘 근태 상태", example = "NORMAL")
@@ -105,13 +105,25 @@ public class DashboardResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema(description = "최근 근태 이력 항목")
     public static class RecentAttendance {
-        private LocalDate workDate;
-        private LocalTime checkIn;
-        private LocalTime checkOut;
-        private Double workHours;
-        private String status;
-        private Long attendanceId;
+    	@Schema(description = "근무 날짜", example = "2026-03-01")
+    	private LocalDate workDate;
+
+    	@Schema(description = "출근 시간", example = "09:00:00")
+    	private LocalTime checkIn;
+
+    	@Schema(description = "퇴근 시간", example = "18:00:00")
+    	private LocalTime checkOut;
+
+    	@Schema(description = "근무 시간 (시간 단위)", example = "8.0")
+    	private Double workHours;
+
+    	@Schema(description = "근태 상태", example = "NORMAL")
+    	private String status;
+
+    	@Schema(description = "근태 ID", example = "1")
+    	private Long attendanceId;
         
         public static RecentAttendance from(Attendance a) {
         	return RecentAttendance.builder()

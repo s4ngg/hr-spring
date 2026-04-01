@@ -1,24 +1,25 @@
 package kr.co.hr.dashboard.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.co.hr.dashboard.controller.docs.DashboardControllerDocs;
 import kr.co.hr.dashboard.dto.DashboardResponseDto;
 import kr.co.hr.dashboard.service.DashboardService;
 import kr.co.hr.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Dashboard", description = "대시보드 API")
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
-public class DashboardController {
+public class DashboardController implements DashboardControllerDocs {
 
     private final DashboardService dashboardService;
 
-    @Operation(summary = "대시보드 조회", description = "직원의 대시보드 정보를 조회합니다.")
+    @Override
     @GetMapping("/{memberId}")
     public ResponseEntity<ApiResponse<DashboardResponseDto>> getDashboard(
             @PathVariable("memberId") Long memberId) {

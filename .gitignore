@@ -38,14 +38,13 @@ out/
 /.metadata/
 
 ### 어플리케이션 프로퍼티스 관리 ###
-<<<<<<< HEAD
 .env
-=======
-.env
+
+logs/
+*.log
 
 # 업로드 이미지
 **/static/uploads/
 
 # 민감한 설정파일
 application*.yml
->>>>>>> 9f55908d67177a660cf9ea37d0156be8867486ef

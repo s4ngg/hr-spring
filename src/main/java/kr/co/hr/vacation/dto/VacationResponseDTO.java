@@ -22,7 +22,7 @@ public class VacationResponseDTO {
 	@Schema(description = "신청자 이름", example = "홍길동")
 	private String memberName; 		// 신청자 이름
 	
-	@Schema(description = "휴가 종류", example = "연차,병가,육아휴직")
+	@Schema(description = "휴가 종류 (연차/병가/육아휴직)", example = "연차")
 	private String vacationType; 	//휴가 종류
 	
 	@Schema(description = "휴가 시작일", example = "2026-03-23")
@@ -34,7 +34,7 @@ public class VacationResponseDTO {
 	@Schema(description = "휴가 일수", example = "8")
 	private Integer days; 			//휴가일수
 	
-	@Schema(description = "휴가 상태", example = "보류중,진행중,거절")
+	@Schema(description = "휴가 상태 (보류중/승인/거절)", example = "보류중")
 	private String status;			//휴가상태
 	
 	@Schema(description = "신청 일시", example = "2026-03-21")
