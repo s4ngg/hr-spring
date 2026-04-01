@@ -1,10 +1,9 @@
 package kr.co.hr.department.service.impl;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import kr.co.hr.department.dto.DepartmentRequestDto;
 import kr.co.hr.department.dto.DepartmentResponseDto;
 import kr.co.hr.department.entity.Department;
