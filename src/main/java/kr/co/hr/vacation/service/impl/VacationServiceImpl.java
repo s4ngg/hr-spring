@@ -218,6 +218,28 @@ public class VacationServiceImpl implements VacationService{
                 .remainingDays(remainingDays)
                 .build();
     }
+   
+    @Override
+    @Transactional(readOnly = true)
+    public List<VacationResponseDTO> getAllVacations() {
+        List<Vacation> list = vacationRepository.findAllWithMember();
+
+        return list.stream().map(v -> {
+            long dayDiff = java.time.temporal.ChronoUnit.DAYS
+                    .between(v.getStartDate(), v.getEndDate()) + 1;
+
+            return VacationResponseDTO.builder()
+                    .vacationId(v.getVacationId())
+                    .memberName(v.getMember().getName())
+                    .vacationType(v.getVacationType())
+                    .startDate(v.getStartDate())
+                    .endDate(v.getEndDate())
+                    .days((int) dayDiff)
+                    .status(v.getStatus().name())
+                    .createdAt(v.getCreatedAt())
+                    .build();
+        }).toList();
+    }
     
    
 }
