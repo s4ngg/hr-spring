@@ -24,4 +24,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 이름 검색 (페이징)
     Page<Member> findByNameContaining(String name, Pageable pageable);
+
 }
