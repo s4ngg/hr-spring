@@ -136,6 +136,10 @@ public class VacationServiceImpl implements VacationService{
     @Override
     @Transactional
     public void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto) {
+    	System.out.println("=== updateVacationStatus 진입 ===");
+    	System.out.println("vacationId = " + vacationId);
+    	System.out.println("dto.status = " + dto.getStatus());
+    	
         Vacation vacation = vacationRepository.findById(vacationId)
                 .orElseThrow(() -> new RuntimeException("해당 휴가 신청 건을 찾을 수 없습니다."));
 
@@ -162,9 +166,13 @@ public class VacationServiceImpl implements VacationService{
                     vacation.getEndDate()
             ) + 1;
 
-            VacationQuota quota = vacation.getVacationQuota();
+            VacationQuota quota = vacation.getVacationQuota();    
+            
             if (quota == null) {
             	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 정보(quota)를 찾을 수 없습니다.");
+            }
+            if (!vacation.getMember().getMemberId().equals(quota.getMember().getMemberId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "휴가 신청자와 quota 소유자가 일치하지 않습니다.");
             }
 
             int currentUsedDays = quota.getUsedDays() != null ? quota.getUsedDays() : 0;
