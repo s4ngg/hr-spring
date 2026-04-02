@@ -35,30 +35,37 @@ public class VacationServiceImpl implements VacationService{
     @Override
     @Transactional
     public void requestVacation(VacationRequestDTO dto) {
-    	// 멤버 레포 필요             신청자 정보 가져오기
-    	Member member = memberRepository.findById(dto.getMemberId()) 
-    			.orElseThrow(() -> new RuntimeException("직원 정보를 찾을 수 없습니다."));
-    	
-    	//잔여 휴가 정보 가져오기
-    	int currentYear = LocalDate.now().getYear();
-    	VacationQuota quota = quotaRepository.findByMember_MemberIdAndYear(dto.getMemberId(), currentYear)
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("직원 정보를 찾을 수 없습니다."));
+
+        int currentYear = LocalDate.now().getYear();
+        VacationQuota quota = quotaRepository.findByMember_MemberIdAndYear(dto.getMemberId(), currentYear)
                 .orElseThrow(() -> new RuntimeException("올해 배정된 휴가 정보가 없습니다."));
-    	
-    	
-    	// 잔여 일수 검증하기 (남은 개수보다 신청한 갯수가 많으면 에러!)
-    	int remainingDays = quota.getTotalDays() - quota.getUsedDays();
-    	
-    	if (dto.getStartDate().isAfter(dto.getEndDate())) {
-    	    throw new RuntimeException("휴가 시작일은 종료일보다 빨라야 합니다.");
-    	}
-    	
-        if (remainingDays < dto.getDays()) {
+        
+        if (!quota.getMember().getMemberId().equals(member.getMemberId())) {
+            throw new RuntimeException("휴가 신청자의 quota 정보가 일치하지 않습니다.");
+        }
+
+        if (dto.getStartDate().isAfter(dto.getEndDate())) {
+            throw new RuntimeException("휴가 시작일은 종료일보다 빨라야 합니다.");
+        }
+
+        int approvedUsedDays = quota.getUsedDays() != null ? quota.getUsedDays() : 0;
+        int totalDays = quota.getTotalDays() != null ? quota.getTotalDays() : 0;
+
+        List<Vacation> pendingVacations =
+                vacationRepository.findByMember_MemberIdAndStatus(dto.getMemberId(), VacationStatus.PENDING);
+
+        int pendingDays = pendingVacations.stream()
+                .mapToInt(v -> (int) (java.time.temporal.ChronoUnit.DAYS.between(v.getStartDate(), v.getEndDate()) + 1))
+                .sum();
+
+        Long requestDays = dto.getDays();
+
+        if (approvedUsedDays + pendingDays + requestDays > totalDays) {
             throw new RuntimeException("잔여 휴가가 부족합니다.");
-        	}
-        
-        
-        
-        
+        }
+
         Vacation vacation = Vacation.builder()
                 .member(member)
                 .vacationQuota(quota)
@@ -67,7 +74,7 @@ public class VacationServiceImpl implements VacationService{
                 .endDate(dto.getEndDate())
                 .status(VacationStatus.PENDING)
                 .build();
-        
+
         vacationRepository.save(vacation);
     }
     
@@ -166,7 +173,7 @@ public class VacationServiceImpl implements VacationService{
             if (currentUsedDays + days > totalDays) {
             	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 일수를 초과했습니다.");
             }
-
+            quota.setUsedDays(currentUsedDays + (int) days);
            
         }
     	
