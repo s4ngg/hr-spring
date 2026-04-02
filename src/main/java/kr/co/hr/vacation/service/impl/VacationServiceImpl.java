@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import kr.co.hr.vacation.dto.VacationAdminRequestDTO;
+import kr.co.hr.vacation.dto.VacationQuotaResponseDTO;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.entity.Vacation;
@@ -19,8 +22,8 @@ import kr.co.hr.vacation.repository.VacationQuotaRepository;
 import kr.co.hr.vacation.repository.VacationRepository;
 import kr.co.hr.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+
+
 
 
 
@@ -182,18 +185,39 @@ public class VacationServiceImpl implements VacationService{
             	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 일수를 초과했습니다.");
             }
             quota.setUsedDays(currentUsedDays + (int) days);
-           
         }
-    	
-    	// 5. 반려(REJECTED) 시 사유 저장 
-        // if (newStatus == VacationStatus.REJECTED) {
-        //     vacation.setRejectReason(dto.getRejectReason());
-        // }
-    	
-
-    
-    
     }
     
     
+    @Override
+    @Transactional(readOnly = true)
+    public VacationQuotaResponseDTO getMyVacationQuota(Long memberId) {
+        int currentYear = LocalDate.now().getYear();
+
+        VacationQuota quota = quotaRepository.findByMember_MemberIdAndYear(memberId, currentYear)
+                .orElseThrow(() -> new RuntimeException("올해 배정된 휴가 정보가 없습니다."));
+
+        int totalDays = quota.getTotalDays() != null ? quota.getTotalDays() : 0;
+        int usedDays = quota.getUsedDays() != null ? quota.getUsedDays() : 0;
+
+        List<Vacation> pendingVacations =
+                vacationRepository.findByMember_MemberIdAndStatus(memberId, VacationStatus.PENDING);
+
+        int pendingDays = pendingVacations.stream()
+                .mapToInt(v -> (int) (java.time.temporal.ChronoUnit.DAYS.between(v.getStartDate(), v.getEndDate()) + 1))
+                .sum();
+
+        int remainingDays = Math.max(totalDays - usedDays - pendingDays, 0);
+
+        return VacationQuotaResponseDTO.builder()
+                .memberId(memberId)
+                .year(currentYear)
+                .totalDays(totalDays)
+                .usedDays(usedDays)
+                .pendingDays(pendingDays)
+                .remainingDays(remainingDays)
+                .build();
+    }
+    
+   
 }
