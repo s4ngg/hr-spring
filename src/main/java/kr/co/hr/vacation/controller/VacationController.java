@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import jakarta.validation.Valid;
 import kr.co.hr.global.config.JwtProvider;
 import kr.co.hr.global.response.ApiResponse; // 배운 위치대로 임포트
 import kr.co.hr.vacation.controller.docs.VacationControllerDocs;
+import kr.co.hr.vacation.dto.VacationQuotaResponseDTO;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.service.VacationService;
@@ -62,4 +62,21 @@ public class VacationController implements VacationControllerDocs {
     	
     	return ApiResponse.success("내 휴가 내역 조회 성공", list);
     }
+    
+    @Override
+    @GetMapping("/quota/my")
+    public ResponseEntity<ApiResponse<VacationQuotaResponseDTO>> getMyVacationQuota(
+            @RequestHeader("Authorization") String token) {
+
+        String jwt = token.substring(7);
+        Long memberId = jwtProvider.getLoginIdFromToken(jwt);
+
+        VacationQuotaResponseDTO quota = vacationService.getMyVacationQuota(memberId);
+
+        return ApiResponse.success("내 휴가 quota 조회 성공", quota);
+    }
+    	
+    
+    
+    
 }

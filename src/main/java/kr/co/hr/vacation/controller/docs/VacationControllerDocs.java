@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.hr.global.response.ApiResponse;
 import kr.co.hr.global.response.docs.ApiResponseVoid;
+import kr.co.hr.vacation.dto.VacationQuotaResponseDTO;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.dto.docs.ApiResponseVacationList;
@@ -94,4 +95,6 @@ public interface VacationControllerDocs {
             ))
     })
     ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getMyVacationHistory(@RequestHeader("Authorization") String token);
+    
+    ResponseEntity<ApiResponse<VacationQuotaResponseDTO>> getMyVacationQuota(String token);
 }
