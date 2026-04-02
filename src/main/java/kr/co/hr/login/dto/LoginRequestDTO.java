@@ -1,10 +1,14 @@
 package kr.co.hr.login.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "로그인 요청 ")
 public class LoginRequestDTO {
 	

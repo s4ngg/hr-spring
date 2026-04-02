@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.hr.global.config.JwtProvider;
 import kr.co.hr.global.response.ApiResponse; // 배운 위치대로 임포트
@@ -21,6 +23,7 @@ import kr.co.hr.vacation.dto.VacationResponseDTO;
 import kr.co.hr.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Vacation Management", description = "휴가 관리 API")
 @RestController
 @RequestMapping("/api/vacations")
 @RequiredArgsConstructor
@@ -59,7 +62,6 @@ public class VacationController implements VacationControllerDocs {
     	
     	// 2. 서비스 호출 (타입 Long)
     	List<VacationResponseDTO> list = vacationService.getMyVacationHistory(memberId);
-    	
     	return ApiResponse.success("내 휴가 내역 조회 성공", list);
     }
     

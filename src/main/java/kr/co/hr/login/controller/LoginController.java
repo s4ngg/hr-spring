@@ -16,6 +16,7 @@ import kr.co.hr.login.dto.LoginResponseDTO;
 import kr.co.hr.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Login", description = "로그인 관련 API")
 
 @RestController
 @RequestMapping("/api") 
