@@ -39,7 +39,7 @@ public class VacationServiceImpl implements VacationService{
     	
     	//잔여 휴가 정보 가져오기
     	int currentYear = LocalDate.now().getYear();
-    	VacationQuota quota = quotaRepository.findByMember_MemberIdAndYear(dto.getMemberId(), currentYear)
+    	VacationQuota quota = quotaRepository.findByMemberIdAndYear(dto.getMemberId(), currentYear)
                 .orElseThrow(() -> new RuntimeException("올해 배정된 휴가 정보가 없습니다."));
     	
     	

@@ -17,5 +17,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     @Query("select v from Vacation v join fetch v.member where v.status = :status")
     List<Vacation> findByStatusWithMember(@Param("status") VacationStatus status);
     
-    int countByStatusAndMember_MemberId(VacationStatus status, Long memberId);
+    @Query("SELECT COUNT(v) FROM Vacation v WHERE v.status = :status AND v.member.memberId = :memberId")
+    int countByStatusAndMemberId(@Param("status") VacationStatus status, @Param("memberId") Long memberId);
 } 

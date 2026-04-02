@@ -3,7 +3,6 @@ package kr.co.hr.dashboard.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.hr.attendance.entity.Attendance;
 import kr.co.hr.vacation.entity.VacationQuota;
-import kr.co.hr.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +54,7 @@ public class DashboardResponseDto {
     
     // 정적 메서드
     public static DashboardResponseDto of(
-    		Member member,
+    		String memberName,
     		Attendance todayAttendance,
     		VacationQuota quota,
     		 int monthlyWorkDays,
@@ -65,7 +64,7 @@ public class DashboardResponseDto {
     		) {
     	
     	return DashboardResponseDto.builder()
-                .memberName(member.getName())
+                .memberName(memberName)
                 .todayCheckIn(extractCheckIn(todayAttendance))
                 .todayCheckOut(extractCheckOut(todayAttendance))
                 .todayStatus(extractStatus(todayAttendance))
