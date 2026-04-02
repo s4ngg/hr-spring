@@ -22,4 +22,6 @@ public interface VacationService {
 	void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto);
 	
 	VacationQuotaResponseDTO getMyVacationQuota(Long memberId);
+	
+	List<VacationResponseDTO> getAllVacations();
 }
