@@ -167,7 +167,7 @@ public class VacationServiceImpl implements VacationService{
             	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "연차 일수를 초과했습니다.");
             }
 
-            quota.setUsedDays(currentUsedDays + (int) days);
+           
         }
     	
     	// 5. 반려(REJECTED) 시 사유 저장 
