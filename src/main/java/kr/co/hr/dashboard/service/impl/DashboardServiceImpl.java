@@ -4,10 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import kr.co.hr.attendance.entity.Attendance;
@@ -21,27 +18,15 @@ import kr.co.hr.vacation.entity.VacationQuota;
 import kr.co.hr.vacation.enums.VacationStatus;
 import kr.co.hr.vacation.repository.VacationQuotaRepository;
 import kr.co.hr.vacation.repository.VacationRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class DashboardServiceImpl implements DashboardService {
-	public DashboardServiceImpl(
-		    MemberRepository memberRepository,
-		    AttendanceRepository attendanceRepository,
-		    VacationQuotaRepository vacationQuotaRepository,
-		    VacationRepository vacationRepository,
-		    @Qualifier("dashboardExecutor") Executor dashboardExecutor) {
-		    this.memberRepository = memberRepository;
-		    this.attendanceRepository = attendanceRepository;
-		    this.vacationQuotaRepository = vacationQuotaRepository;
-		    this.vacationRepository = vacationRepository;
-		    this.dashboardExecutor = dashboardExecutor;
-		}
-	
     private final MemberRepository memberRepository;
     private final AttendanceRepository attendanceRepository;
     private final VacationQuotaRepository vacationQuotaRepository;
     private final VacationRepository vacationRepository;
-    private final Executor dashboardExecutor;
 
     @Override
     public DashboardResponseDto getDashboard(Long memberId) {
@@ -51,49 +36,35 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDate firstDay = currentMonth.atDay(1);
         LocalDate lastDay = currentMonth.atEndOfMonth();
 
-        // 병렬 실행
-        CompletableFuture<String> memberFuture = CompletableFuture.supplyAsync(() ->
-            memberRepository.findNameById(memberId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND)),
-            dashboardExecutor);
+        String memberName = memberRepository.findNameById(memberId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        CompletableFuture<Attendance> todayAttFuture = CompletableFuture.supplyAsync(() ->
-            attendanceRepository.findByMemberIdAndWorkDate(memberId, today).orElse(null),
-            dashboardExecutor);
+        Attendance todayAttendance = attendanceRepository
+            .findByMemberIdAndWorkDate(memberId, today).orElse(null);
 
-        CompletableFuture<VacationQuota> quotaFuture = CompletableFuture.supplyAsync(() ->
-            vacationQuotaRepository.findByMemberIdAndYear(memberId, currentYear).orElse(null),
-            dashboardExecutor);
+        VacationQuota quota = vacationQuotaRepository
+            .findByMemberIdAndYear(memberId, currentYear).orElse(null);
 
-        CompletableFuture<Integer> monthlyWorkFuture = CompletableFuture.supplyAsync(() ->
-            attendanceRepository.countByMemberIdAndWorkDateBetween(memberId, firstDay, lastDay),
-            dashboardExecutor);
+        int monthlyWorkDays = attendanceRepository
+            .countByMemberIdAndWorkDateBetween(memberId, firstDay, lastDay);
 
-        CompletableFuture<Integer> pendingFuture = CompletableFuture.supplyAsync(() ->
-            vacationRepository.countByStatusAndMemberId(VacationStatus.PENDING, memberId),
-            dashboardExecutor);
+        int pendingCount = vacationRepository
+            .countByStatusAndMemberId(VacationStatus.PENDING, memberId);
 
-        CompletableFuture<List<Attendance>> recentFuture = CompletableFuture.supplyAsync(() ->
-            attendanceRepository.findTop5ByMemberIdOrderByWorkDateDesc(memberId),
-            dashboardExecutor);
+        List<Attendance> recentList = attendanceRepository
+            .findTop5ByMemberIdOrderByWorkDateDesc(memberId);
 
-        // 모든 작업 완료 대기
-        CompletableFuture.allOf(memberFuture, todayAttFuture, quotaFuture,
-                monthlyWorkFuture, pendingFuture, recentFuture).join();
+        int monthlyTotalDays = calculateWeekdays(firstDay, lastDay);
 
-        try {
-            return DashboardResponseDto.of(
-                memberFuture.get(),
-                todayAttFuture.get(),
-                quotaFuture.get(),
-                monthlyWorkFuture.get(),
-                calculateWeekdays(firstDay, lastDay),
-                pendingFuture.get(),
-                recentFuture.get()
-            );
-        } catch (Exception e) {
-            throw new BusinessException(ErrorCode.MEMBER_NOT_FOUND);
-        }
+        return DashboardResponseDto.of(
+            memberName,
+            todayAttendance,
+            quota,
+            monthlyWorkDays,
+            monthlyTotalDays,
+            pendingCount,
+            recentList
+        );
     }
 
     private int calculateWeekdays(LocalDate firstDay, LocalDate lastDay) {
