@@ -17,11 +17,15 @@ import kr.co.hr.itcontact.MailService;
 import kr.co.hr.member.entity.Member;
 import kr.co.hr.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class FindPasswordServiceImpl implements FindPasswordService {
 
+	private static final Logger logger = LogManager.getLogger(FindPasswordServiceImpl.class);
+	 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
@@ -37,6 +41,7 @@ public class FindPasswordServiceImpl implements FindPasswordService {
 
         verificationRedisRepository.saveCode(dto.getEmail(), encodedCode);
         mailService.sendVerificationMail(dto.getEmail(), code);
+        logger.info("인증번호 발송 - email: {}", dto.getEmail());
     }
 
     @Override
@@ -45,12 +50,14 @@ public class FindPasswordServiceImpl implements FindPasswordService {
         		.orElseThrow(() -> new BusinessException(ErrorCode.VERIFICATION_EXPIRED));
 
         if (!passwordEncoder.matches(dto.getCode(), encodedCode)) {
+        	logger.warn("인증번호 검증 실패 - email: {}", dto.getEmail());
         	throw new BusinessException(ErrorCode.INVALID_VERIFICATION_CODE);
         }
 
         // 인증 성공 후 코드 즉시 삭제 → 재사용 방지
         verificationRedisRepository.deleteCode(dto.getEmail());
         verificationRedisRepository.saveVerified(dto.getEmail());
+        logger.info("인증번호 검증 성공 - email: {}", dto.getEmail());
     }
 
     @Transactional
@@ -65,7 +72,8 @@ public class FindPasswordServiceImpl implements FindPasswordService {
 
         member.updatePassword(passwordEncoder.encode(dto.getNewPassword()));
         verificationRedisRepository.deleteVerified(dto.getEmail());
-        verificationRedisRepository.deleteCode(dto.getEmail()); // ← 이거 추가!
+        logger.info("비밀번호 재설정 완료 - email: {}", dto.getEmail());
+        verificationRedisRepository.deleteCode(dto.getEmail());
     }
 
     // SecureRandom으로 예측 불가능한 인증번호 생성
