@@ -49,6 +49,10 @@ public class VacationAdminController implements VacationAdminControllerDocs {
         vacationService.updateVacationStatus(vacationId, dto);
         return ApiResponse.success("휴가 상태 변경 처리가 완료되었습니다.");
     }
-	
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<VacationResponseDTO>>> getAllVacations() {
+	    List<VacationResponseDTO> list = vacationService.getAllVacations();
+	    return ApiResponse.success("전체 휴가 목록 조회 성공", list);
+	}
 	
 }

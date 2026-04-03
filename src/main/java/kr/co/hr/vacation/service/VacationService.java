@@ -3,6 +3,7 @@ package kr.co.hr.vacation.service;
 import java.util.List;
 
 import kr.co.hr.vacation.dto.VacationAdminRequestDTO;
+import kr.co.hr.vacation.dto.VacationQuotaResponseDTO;
 import kr.co.hr.vacation.dto.VacationRequestDTO;
 import kr.co.hr.vacation.dto.VacationResponseDTO;
 
@@ -19,4 +20,8 @@ public interface VacationService {
 	
 	// [추가] 관리자용 승인/반려 처리
 	void updateVacationStatus(Long vacationId, VacationAdminRequestDTO dto);
+	
+	VacationQuotaResponseDTO getMyVacationQuota(Long memberId);
+	
+	List<VacationResponseDTO> getAllVacations();
 }

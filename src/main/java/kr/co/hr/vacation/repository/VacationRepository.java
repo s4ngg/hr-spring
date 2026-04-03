@@ -18,4 +18,9 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     List<Vacation> findByStatusWithMember(@Param("status") VacationStatus status);
     
     int countByStatusAndMember_MemberId(VacationStatus status, Long memberId);
+    
+    List<Vacation> findByMember_MemberIdAndStatus(Long memberId, VacationStatus status);
+    
+    @Query("select v from Vacation v join fetch v.member order by v.createdAt desc")
+    List<Vacation> findAllWithMember();
 } 
