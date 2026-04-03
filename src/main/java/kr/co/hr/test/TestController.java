@@ -1,7 +1,7 @@
 package kr.co.hr.test;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class TestController {
     private final MemberService memberService;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<ApiResponse<MemberResponseDTO>> createMember(
             @Valid @RequestBody MemberRequestDTO requestDTO) {
         return ApiResponse.success("직원 등록 성공", memberService.createMember(requestDTO));
